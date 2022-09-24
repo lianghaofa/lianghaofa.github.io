@@ -1,0 +1,109 @@
+---
+title: leetcode-450-DeleteNode
+date: 2022-04-23 12:40:52
+summary: 删除二叉搜索树中的节点
+categories: leetcode
+tags:
+- Tree
+
+---
+## FindMaximumXOR
+[leetcode-450-DeleteNode](https://leetcode-cn.com/problems/delete-node-in-a-bst/)
+
+
+```java
+public class DeleteNode {
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    public static void main(String[] args) {
+        TreeNode node5 = new TreeNode(5);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node2 = new TreeNode(2);
+        TreeNode node4 = new TreeNode(4);
+        TreeNode node6 = new TreeNode(6);
+        TreeNode node7 = new TreeNode(7);
+
+        node5.left = node3;
+        node5.right = node6;
+        node3.left = node2;
+        node3.right = node4;
+        node6.right = node7;
+        deleteNode(node5, 3);
+    }
+
+
+    public static TreeNode deleteNode(TreeNode root, int key) {
+        TreeNode temp = new TreeNode(-1);
+        temp.left = root;
+        // parentNode  deleteNode
+        TreeNode[] cur = findNode(root, temp, key);
+        TreeNode parentNode = cur[0];
+        TreeNode deleteNode = cur[1];
+        if (deleteNode == null){
+            return root;
+        }
+        TreeNode nextDelete = findRightNextNode(deleteNode);
+        boolean l = parentNode.right != deleteNode;
+        if (deleteNode.right == null){
+            if (l){
+                parentNode.left = parentNode.left.left;
+            }else {
+                parentNode.right = parentNode.right.left;
+            }
+        } else {
+            // 删除右侧 一个节点
+            TreeNode curLeft = deleteNode.left;
+            TreeNode c = deleteNode(deleteNode.right, nextDelete.val);
+            if (l){
+                parentNode.left = nextDelete;
+            }else {
+                parentNode.right = nextDelete;
+            }
+            nextDelete.left = curLeft;
+            if (c != nextDelete){
+                nextDelete.right =  c;
+            }
+        }
+        return temp.left;
+    }
+
+    private static TreeNode findRightNextNode(TreeNode cur) {
+        TreeNode right = cur.right;
+        while (right != null &&  right.left != null){
+            right = right.left;
+        }
+        return right;
+    }
+
+    public static TreeNode[] findNode(TreeNode root, TreeNode parent, int key) {
+        if (root == null){
+            return new TreeNode[]{parent, null};
+        }
+        if (root.val == key){
+            return new TreeNode[]{parent, root};
+        }else if (root.val > key){
+            return findNode(root.left, root, key);
+        }else {
+            return findNode(root.right, root, key);
+        }
+    }
+}
+```

@@ -1,0 +1,51 @@
+---
+title: leetcode-2187-Minimum Time to Complete Trips
+date: 2022-05-21 22:50:52
+summary: 完成旅途的最少时间
+categories: leetcode
+- 二分
+
+---
+## 完成旅途的最少时间
+
+
+[leetcode-2187-Minimum Time to Complete Trips](https://leetcode.cn/problems/minimum-time-to-complete-trips/)
+
+
+```java
+public class MinimumTime {
+
+    public static void main(String[] args) {
+        System.out.println(minimumTime(new int[]{10000}, 10000000));
+    }
+
+    public static long minimumTime(int[] time, int totalTrips) {
+        long ans = -1;
+        long l = 1;
+        long r = (long) 1e13;
+
+        while (l <= r){
+            long mid = l + (r - l >> 1);
+            if (canWork(time, totalTrips, mid)){
+                ans = mid;
+                r = mid - 1;
+            }else {
+                l = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    private static boolean canWork(int[] time, int totalTrips, long mid){
+        long sum = 0;
+        for (int value : time) {
+            sum += (mid / value);
+            if (sum >= totalTrips) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
+```

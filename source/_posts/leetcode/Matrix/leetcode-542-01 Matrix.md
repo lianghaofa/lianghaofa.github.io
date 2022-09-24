@@ -1,0 +1,94 @@
+---
+title: leetcode-542-01 Matrix
+date: 2022-05-08 15:40:52
+summary: 01 矩阵
+categories: leetcode
+tags:
+- BFS   
+- DP
+
+---
+## 01 矩阵
+[leetcode-542-01 Matrix](https://leetcode-cn.com/problems/01-matrix/)
+
+> DP
+
+```java
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        int M = mat.length;
+        if (M == 0) {
+            return mat;
+        }
+        int N = mat[0].length;
+        int MAX = 10_000;
+        int[][] res = new int[M][N];
+
+
+        if (mat[0][0] == 1){
+            res[0][0]= MAX;
+        }
+
+        // 第一列
+        for (int i = 1; i < M; i ++){
+            if (mat[i][0] == 0){
+                res[i][0] = 0;
+            }else {
+                res[i][0] = res[i - 1][0] + 1;
+            }
+        }
+
+        // 第一行
+        for (int i = 1; i < N; i ++){
+            if (mat[0][i] == 0){
+                res[0][i] = 0;
+            }else {
+                res[0][i] = res[0][i - 1] + 1;
+            }
+        }
+
+        for (int i = 1; i < M; i ++){
+            for (int j = 1; j < N; j ++ ){
+                if (mat[i][j] == 0){
+                    res[i][j] = 0;
+                }else {
+                    res[i][j] = Math.min(res[i - 1][j], res[i][j - 1]) + 1;
+                }
+            }
+        }
+
+        // 可能会越界
+
+        // 最后一行，最后一列的元素
+        if (mat[M - 1][N - 1] == 0){
+            res[M - 1][N - 1] = 0;
+        }
+
+        // 最后一行
+        for (int i = N - 2; i >= 0; i --){
+            if (mat[M - 1][i] == 0){
+                res[M - 1][i] = 0;
+            }else {
+                res[M - 1][i] = Math.min( res[M - 1][i], res[M - 1][i + 1] + 1);
+            }
+        }
+
+        // 最后一列
+        for (int i = M - 2; i >= 0; i --){
+            if (mat[i][N - 1] == 0){
+                res[i][N - 1] = 0;
+            }else {
+                res[i][N - 1] = Math.min( res[i][N - 1], res[i + 1][N - 1] + 1);
+            }
+        }
+
+        for (int i = M - 2; i >= 0; i --){
+            for (int j = N - 2; j >= 0; j --){
+                res[i][j] = Math.min(res[i][j] , Math.min(res[i + 1][j], res[i][j + 1]) + 1);
+            }
+        }
+
+        return res;
+    }
+}
+```
