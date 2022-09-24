@@ -1,0 +1,38 @@
+<hr>
+<p>title: leetcode-1103-DistributeCandies<br>date: 2022-05-20 15:10:52<br>summary: 分糖果 II<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Math</li>
+</ul>
+<hr>
+<h2 id="分糖果-II"><a href="#分糖果-II" class="headerlink" title="分糖果 II"></a>分糖果 II</h2><p><a href="https://leetcode.cn/problems/distribute-candies-to-people/">leetcode-1103-DistributeCandies</a></p>
+<pre><code class="java">class Solution {
+    public static  int[] distributeCandies(int candies, int num_people) {
+
+        int[] ans = new int[num_people];
+        int first = 1, firstSum = 0, end = first + num_people - 1, sum = 0, d = 0;
+        while ((sum + (first + end) / 2 * num_people) &lt; candies){
+            sum += (first + end) * num_people / 2;
+            firstSum += first;
+            first = end + 1;
+            d ++;
+            end = first + num_people - 1;
+        }
+        // firstSum 上一层次的第一个数
+        for (int i = 0; i &lt; ans.length; i ++){
+            if (sum &gt;= candies){
+                ans[i] = firstSum;
+            }else {
+                if (sum + first &gt;= candies){
+                    ans[i] = firstSum + (candies - sum);
+                }else {
+                    ans[i] = firstSum + first;
+                }
+                sum += first;
+            }
+            firstSum += d;
+            first ++;
+        }
+        return ans;
+    }
+}
+</code></pre>

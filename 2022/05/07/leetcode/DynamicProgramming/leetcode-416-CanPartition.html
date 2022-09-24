@@ -1,0 +1,48 @@
+<hr>
+<p>title: leetcode-416-CanPartition<br>date: 2022-04-27 14:40:52<br>summary: 分割等和子集<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="分割等和子集"><a href="#分割等和子集" class="headerlink" title="分割等和子集"></a>分割等和子集</h2><p><a href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">leetcode-416-CanPartition</a></p>
+<pre><code class="java">public class CanPartition {
+
+    public static void main(String[] args) {
+        canPartition(new int[]{14,9,8,4,3,2});
+    }
+
+    public static boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 == 1){
+            return false;
+        }
+        int m = nums.length;
+        int n = sum / 2 + 1;
+        boolean[][] dp = new boolean[m][n];
+        dp[0][0] = true;
+        if (nums[0] &lt; n){
+            dp[0][nums[0]] = true;
+        }
+        if (dp[0][dp[0].length - 1]){
+            return true;
+        }
+        for (int i = 1; i &lt; m; i ++){
+            for (int j = 0; j &lt; n; j ++){
+                if (dp[i - 1][j]){
+                    dp[i][j] = true;
+                }
+                if (dp[i - 1][j] &amp;&amp; j + nums[i] &lt; n){
+                    dp[i][j + nums[i]] = true;
+                }
+            }
+            if (dp[i][n - 1]){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>

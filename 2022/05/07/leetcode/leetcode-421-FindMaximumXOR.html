@@ -1,0 +1,71 @@
+<hr>
+<p>title: leetcode-421-FindMaximumXOR<br>date: 2022-04-22 12:40:52<br>summary: 数组中两个数的最大异或值<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Trie</li>
+</ul>
+<hr>
+<h2 id="FindMaximumXOR"><a href="#FindMaximumXOR" class="headerlink" title="FindMaximumXOR"></a>FindMaximumXOR</h2><p><a href="https://leetcode-cn.com/problems/ms70jA/">leetcode-421-FindMaximumXOR</a></p>
+<p><strong>注意点：任意两个数</strong><br>&#x2F;&#x2F; 数组中最大两个数的异或值<br>&#x2F;&#x2F; Trie树 从31位开始建树，代码好写很多！</p>
+<pre><code class="java">class Solution {
+    class Tried{
+        Tried zero;
+        Tried one;
+        Tried(){
+            zero = null;
+            one = null;
+        }
+    }
+
+    public int findMaximumXOR(int[] nums) {
+        Tried head = new Tried();
+        Tried cur = head, other;
+        int x1 = 0x40000000;
+        for (int i = 30; i &gt;= 0; i --){
+            if ((nums[0] &amp; x1) != 0){
+                cur.one = new Tried();
+                cur = cur.one;
+            }else {
+                cur.zero = new Tried();
+                cur = cur.zero;
+            }
+            x1 &gt;&gt;= 1;
+        }
+        int max = 0;
+        for (int i = 1; i &lt; nums.length; i ++){
+            cur = head;
+            other = head;
+            int m = 0;
+            int x = 0x40000000;
+            for (int j = 30; j &gt;= 0; j --){
+                if ((nums[i] &amp; x) != 0){
+                    if (other.zero != null){
+                        other = other.zero;
+                        m |= x;
+                    }else {
+                        other = other.one;
+                    }
+                    if (cur.one == null){
+                        cur.one = new Tried();
+                    }
+                    cur = cur.one;
+                }else {
+                    if (other.one != null){
+                        other = other.one;
+                        m |= x;
+                    }else {
+                        other = other.zero;
+                    }
+                    if (cur.zero == null){
+                        cur.zero = new Tried();
+                    }
+                    cur = cur.zero;
+                }
+                x &gt;&gt;= 1;
+            }
+            max = Math.max(max,m);
+        }
+        return max;
+    }
+
+}
+</code></pre>

@@ -1,0 +1,35 @@
+<hr>
+<p>title: leetcode-763-PartitionLabels<br>date: 2022-04-27 21:40:52<br>summary: 划分字母区间<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>贪心</li>
+</ul>
+<hr>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a href="https://leetcode-cn.com/problems/partition-labels/">leetcode-763-PartitionLabels</a></p>
+<blockquote>
+<p>BFS</p>
+</blockquote>
+<pre><code class="java">public class PartitionLabels {
+
+    public static void main(String[] args) {
+        partitionLabels(&quot;ababcbacadefegdehijhklij&quot;);
+    }
+    public static List&lt;Integer&gt; partitionLabels(String s) {
+        char[] sArr = s.toCharArray();
+        List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+        int[] lastIndexArr = new int[26];
+        for (int i = 0; i &lt; s.length(); i ++){
+            lastIndexArr[sArr[i] - &#39;a&#39;] = i;
+        }
+        int pre = 0;
+        int lastIndex = lastIndexArr[sArr[0] - &#39;a&#39;];
+        for (int i = 0; i &lt; s.length(); i ++){
+            lastIndex = Math.max(lastIndex, lastIndexArr[sArr[i] - &#39;a&#39;]);
+            if (lastIndex == i){
+                ans.add(i - pre);
+                pre = i + 1;
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>

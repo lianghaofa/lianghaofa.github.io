@@ -1,0 +1,28 @@
+<hr>
+<p>title: leetcode-11-Container With Most Water<br>date: 2022-05-06 09:10:52<br>summary: 盛最多水的容器<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>双指针</li>
+</ul>
+<hr>
+<h2 id="盛最多水的容器"><a href="#盛最多水的容器" class="headerlink" title="盛最多水的容器"></a>盛最多水的容器</h2><p><a href="https://leetcode-cn.com/problems/container-with-most-water/">leetcode-11-Container With Most Water</a></p>
+<blockquote>
+<p>区间 [a,b] 能够存储的水量，由 height[a], height[b] 的最小值决定。<br>小的不断向令一侧移动</p>
+</blockquote>
+<h3 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h3><pre><code class="java">class Solution {
+    public int maxArea(int[] height) {
+        int l = 0;
+        int r = height.length - 1;
+        int ans = Integer.MIN_VALUE;
+        while (l &lt; r){
+            int h = Math.min(height[l], height[r]);
+            ans =  Math.max(ans, (r - l) * h);
+            if (h == height[l]){
+                l ++;
+            }else {
+                r --;
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>

@@ -1,0 +1,47 @@
+<hr>
+<p>title: leetcode-60-Permutation Sequence<br>date: 2022-05-27 16:10:52<br>summary: 排列序列<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Math</li>
+</ul>
+<hr>
+<h2 id="排列序列"><a href="#排列序列" class="headerlink" title="排列序列"></a>排列序列</h2><p><a href="https://leetcode.cn/problems/permutation-sequence/">leetcode-60-Permutation Sequence</a></p>
+<pre><code class="java">   public static String getPermutation(int n, int k) {
+        boolean[] arr = new boolean[n];
+        StringBuilder ans = new StringBuilder();
+        int sum = 1;
+        for (int i = 2; i &lt; n; i ++){
+            sum *= i;
+        }
+        k --;
+        for (int i = n; i &gt; 1; i --){
+            int m = (k / sum);
+            int num = getNoNum(arr, m + 1);
+            ans.append(num);
+            arr[num - 1] = true;
+            k %= sum;
+            sum /= (i - 1);
+        }
+        // lastNum
+        for (int i = 0; i &lt; arr.length; i ++){
+            if (!arr[i]){
+                ans.append(i + 1);
+                break;
+            }
+        }
+        return ans.toString();
+    }
+
+
+    private static int getNoNum(boolean[] arr, int no){
+        int ans = arr.length;
+        for (int i = 0; i &lt; arr.length; i ++){
+            if (!arr[i]){
+                no --;
+            }
+            if (no == 0){
+                return i + 1;
+            }
+        }
+        return ans;
+    }
+</code></pre>

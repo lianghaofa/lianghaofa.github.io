@@ -1,0 +1,46 @@
+<hr>
+<p>title: leetcode-973-KClose<br>date: 2022-04-29 19:40:52<br>summary: 最接近原点的 K 个点<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>堆</li>
+</ul>
+<hr>
+<h2 id="最接近原点的-K-个点"><a href="#最接近原点的-K-个点" class="headerlink" title="最接近原点的 K 个点"></a>最接近原点的 K 个点</h2><p><a href="https://leetcode-cn.com/problems/k-closest-points-to-origin/">leetcode-973-CombinationSum</a></p>
+<pre><code class="java">class Solution {
+    class Node{
+        int x;
+        int y;
+        double dist;
+        Node(int x, int y){
+            this.x = x;
+            this.y = y;
+            this.dist = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+        }
+        
+    }
+
+    public int[][] kClosest(int[][] points, int k) {
+        int[][] ans = new int[k][2];
+        PriorityQueue&lt;Node&gt; priorityQueue = new PriorityQueue&lt;&gt;(new Comparator&lt;Node&gt;() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                if (o1.dist &gt; o2.dist){
+                    return 1;
+                }else if (o1.dist &lt; o2.dist){
+                    return -1;
+                }else {
+                    return 0;
+                }
+            }
+        });
+        for (int[] point : points) {
+            priorityQueue.add(new Node(point[0], point[1]));
+        }
+        for (int i = 0; i &lt; k &amp;&amp; !priorityQueue.isEmpty(); i ++){
+            Node node = priorityQueue.poll();
+            ans[i][0] = node.x;
+            ans[i][1] = node.y;
+        }
+        return ans;
+    }
+}
+</code></pre>

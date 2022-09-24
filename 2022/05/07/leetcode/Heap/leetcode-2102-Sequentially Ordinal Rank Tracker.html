@@ -1,0 +1,72 @@
+<hr>
+<p>title: leetcode-2102-Sequentially Ordinal Rank Tracker<br>date: 2022-04-29 19:40:52<br>summary: 序列顺序查询<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>堆</li>
+</ul>
+<hr>
+<h2 id="序列顺序查询"><a href="#序列顺序查询" class="headerlink" title="序列顺序查询"></a>序列顺序查询</h2><p><a href="https://leetcode.cn/problems/sequentially-ordinal-rank-tracker/">leetcode-2102-Sequentially Ordinal Rank Tracker</a></p>
+<blockquote>
+<p>维护两个堆</p>
+</blockquote>
+<pre><code class="java">class SORTracker {
+
+    class Node{
+        String name;
+        int score;
+        Node(String name, int score){
+            this.name = name;
+            this.score = score;
+        }
+    }
+
+    int i;
+    PriorityQueue&lt;Node&gt; maxHeap;
+    PriorityQueue&lt;Node&gt; minHeap;
+
+    public SORTracker() {
+        this.i = 0;
+        this.maxHeap = new PriorityQueue&lt;&gt;(new Comparator&lt;Node&gt;() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                if (o1.score == o2.score){
+                    return o1.name.compareTo(o2.name);
+                }
+                return o2.score - o1.score;
+            }
+        });
+        this.minHeap = new PriorityQueue&lt;&gt;(new Comparator&lt;Node&gt;() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                if (o1.score == o2.score){
+                    return o2.name.compareTo(o1.name);
+                }
+                return o1.score - o2.score;
+            }
+        });
+    }
+
+    public void add(String name, int score) {
+        if (minHeap.isEmpty()){
+            maxHeap.add(new Node(name, score));
+        }else {
+            Node node = minHeap.peek();
+            if (node.score &lt; score || (node.score == score &amp;&amp; node.name.compareTo(name) &gt;= 0)){
+                Node n = minHeap.poll();
+                maxHeap.add(n);
+                minHeap.add(new Node(name, score));
+            }else {
+                maxHeap.add(new Node(name, score));
+            }
+        }
+    }
+
+    public String get() {
+        while (minHeap.size() &lt;= i){
+            Node node = maxHeap.poll();
+            minHeap.add(node);
+        }
+        i ++;
+        return minHeap.peek().name;
+    }
+}
+</code></pre>

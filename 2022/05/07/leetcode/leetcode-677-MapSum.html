@@ -1,0 +1,60 @@
+<hr>
+<p>title: leetcode-421-MapSum<br>date: 2022-04-22 16:40:52<br>summary: 键值映射<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Trie</li>
+</ul>
+<hr>
+<h2 id="MapSum"><a href="#MapSum" class="headerlink" title="MapSum"></a>MapSum</h2><p><a href="https://leetcode-cn.com/problems/map-sum-pairs/">leetcode-677-FindMaximumXOR</a></p>
+<p><strong>void insert(String key, int val) 如果键 key 已经存在，那么原来的键值对将被替代成新的键值对</strong></p>
+<pre><code class="java">public class MapSum {
+
+    class Trie {
+        int count;
+        Trie[] children;
+        Trie(int count){
+            this.count = count;
+            children = new Trie[26];
+        }
+    }
+    Trie head;
+    Map&lt;String,Integer&gt; map;
+    /** Initialize your data structure here. */
+    public MapSum() {
+        head = new Trie(0);
+        map = new HashMap&lt;&gt;();
+    }
+
+
+
+    public void insert(String key, int val) {
+        Trie cur = head;
+        boolean existed =  false;
+        Integer v = map.get(key);
+        map.put(key,val);
+        for (int i = 0; i &lt; key.length(); i ++){
+            if (cur.children[key.charAt(i) - &#39;a&#39;] == null){
+                cur.children[key.charAt(i) - &#39;a&#39;] = new Trie(val);
+            }else {
+                if (v == null){
+                    cur.children[key.charAt(i) - &#39;a&#39;].count += val;
+                }else {
+                    cur.children[key.charAt(i) - &#39;a&#39;].count +=  (v - val);
+                }
+            }
+            cur = cur.children[key.charAt(i) - &#39;a&#39;];
+        }
+    }
+
+    public int sum(String prefix) {
+        Trie cur = head;
+        int ans = 0;
+        for (int i = 0; i &lt; prefix.length(); i ++){
+            if (cur.children[prefix.charAt(i) - &#39;a&#39;] == null){
+                return ans;
+            }
+            cur = cur.children[prefix.charAt(i) - &#39;a&#39;];
+        }
+        return cur.count;
+    }
+}
+</code></pre>

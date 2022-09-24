@@ -1,0 +1,57 @@
+<hr>
+<p>title: leetcode-87-RestoreIpAddresses<br>date: 2022-04-230 20:40:52<br>summary: 复原 IP<br>categories: leetcode<br>tags: </p>
+<hr>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a href="https://leetcode-cn.com/problems/0on3uN/">leetcode-87-RestoreIpAddresses</a></p>
+<pre><code class="java">public class RestoreIpAddresses {
+    
+    List&lt;String&gt; ans = new ArrayList&lt;&gt;();
+    public  List&lt;String&gt; restoreIpAddresses(String s) {
+
+        restoreIpAddresses( s, 0,  0, new StringBuilder());
+        return ans;
+    }
+
+    public  void restoreIpAddresses(String s, int index, int len, StringBuilder builder) {
+        if (len == 4){
+            if (index == s.length()){
+                ans.add(builder.toString());
+            }else {
+                return;
+            }
+        }
+        if (index &gt;= s.length()){
+            return;
+        }
+        // 截取1位
+        int bLen = builder.length();
+        builder.append(s.substring(index, index + 1));
+        if (len &lt; 3){
+            builder.append(&quot;.&quot;);
+        }
+        restoreIpAddresses( s, index + 1, len + 1, builder);
+        builder.delete(bLen, builder.length());
+        // 截取2位
+        if (index &lt; s.length() - 1 &amp;&amp; s.charAt(index) != &#39;0&#39;){
+            builder.append(s.substring(index, index + 2));
+            if (len &lt; 3){
+                builder.append(&quot;.&quot;);
+            }
+            restoreIpAddresses( s, index + 2, len + 1, builder);
+            builder.delete(bLen, builder.length());
+        }
+        // 截取3位
+        if ( index &lt; s.length() - 2 &amp;&amp;  index + 2 &lt; s.length() &amp;&amp; s.charAt(index) != &#39;0&#39;){
+            int val = Integer.parseInt(s.substring(index, index + 3));
+            if (val &gt; 255 || val &lt; 100 ){
+                return;
+            }
+            builder.append(val);
+            if (len &lt; 3){
+                builder.append(&quot;.&quot;);
+            }
+            restoreIpAddresses( s, index + 3, len + 1, builder);
+            builder.delete(bLen, builder.length());
+        }
+    }
+}
+</code></pre>

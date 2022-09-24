@@ -1,0 +1,33 @@
+<hr>
+<p>title: leetcode-213-Rob<br>date: 2022-05-01 21:05:52<br>summary: 打家劫舍 II<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="打家劫舍-II"><a href="#打家劫舍-II" class="headerlink" title="打家劫舍 II"></a>打家劫舍 II</h2><blockquote>
+<p>抢N，就不能抢0<br>抢0，就不能抢N</p>
+</blockquote>
+<p><a href="https://leetcode-cn.com/problems/house-robber-ii/">leetcode-213-Rob</a></p>
+<pre><code class="java">    public int rob(int[] nums) {
+        if (nums.length == 0){
+            return 0;
+        }
+        if (nums.length == 1){
+            return nums[0];
+        }
+        return Math.max(rob(nums, 0, nums.length - 2), rob(nums, 1, nums.length - 1));
+    }
+
+    public int rob(int[] nums, int start, int end) {
+        if (start &gt; end){
+            return 0;
+        }
+        int rob0 = 0, rob1 = nums[start];
+        for (int i = start + 1; i &lt;= end; i ++){
+            int r = Math.max(rob0, rob1);
+            rob1 = rob0 + nums[i];
+            rob0 = r;
+        }
+        return Math.max(rob0, rob1);
+    }
+</code></pre>

@@ -1,0 +1,36 @@
+<hr>
+<p>title: leetcode-990-Satisfiability of Equality Equations<br>date: 2022-05-13 12:10:52<br>summary: 等式方程的可满足性<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>并查集</li>
+</ul>
+<hr>
+<h2 id="等式方程的可满足性"><a href="#等式方程的可满足性" class="headerlink" title="等式方程的可满足性"></a>等式方程的可满足性</h2><p><a href="https://leetcode.cn/problems/satisfiability-of-equality-equations/">leetcode-990-Satisfiability of Equality Equations</a></p>
+<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><pre><code class="java">public class EquationsPossible {
+
+    public boolean equationsPossible(String[] equations) {
+        int[] arr = new int[26];
+        for (int i = 0; i &lt; arr.length; i ++){
+            arr[i] = i;
+        }
+        for (String s : equations) {
+            if (s.charAt(1) == &#39;=&#39;) {
+                arr[findParent(arr, s.charAt(0) - &#39;a&#39;)] = findParent(arr, s.charAt(3) - &#39;a&#39;);
+            }
+        }
+        for (String equation : equations) {
+            if (equation.charAt(1) == &#39;!&#39; &amp;&amp;
+                    findParent(arr, equation.charAt(0) - &#39;a&#39;) == findParent(arr, equation.charAt(3) - &#39;a&#39;)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int findParent(int[] arr, int cur){
+        if (arr[cur] != cur){
+            arr[cur] = findParent(arr, arr[cur]);
+        }
+        return arr[cur];
+    }
+}
+</code></pre>

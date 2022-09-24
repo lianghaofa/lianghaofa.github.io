@@ -1,0 +1,44 @@
+<hr>
+<p>title: leetcode-2222-Number of Ways to Select Buildings<br>date: 2022-05-31 20:10:52<br>summary: 选择建筑的方案数<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="选择建筑的方案数"><a href="#选择建筑的方案数" class="headerlink" title="选择建筑的方案数"></a>选择建筑的方案数</h2><p><a href="https://leetcode.cn/problems/number-of-ways-to-select-buildings/">leetcode-2222-Number of Ways to Select Buildings</a></p>
+<h4 id="选择建筑的方案数-1"><a href="#选择建筑的方案数-1" class="headerlink" title="选择建筑的方案数"></a>选择建筑的方案数</h4><pre><code class="java">class Solution {
+    public long numberOfWays(String s) {
+
+        // 10 的个数
+        long[] oneDp = new long[s.length()];
+        // 01 的个数
+        long[] zeroDp = new long[s.length()];
+        long oneCount = s.charAt(s.length() - 1) == &#39;1&#39; ? 1 : 0;
+        long zeroCount = s.charAt(s.length() - 1) == &#39;0&#39; ? 1 : 0;
+        // dp[i] 存储 c == &#39;1&#39;, 存储 01 的个数，  c == &#39;0&#39;，存储 10 的个数
+        // oneCount 1 的个数
+        for (int i = s.length() - 2; i &gt;= 0 ; i --){
+            char c = s.charAt(i);
+            if (c == &#39;0&#39;){
+                zeroDp[i] = zeroDp[i + 1] + oneCount;
+                oneDp[i] = oneDp[i + 1];
+                zeroCount ++;
+            }else {
+                zeroDp[i] = zeroDp[i + 1];
+                oneDp[i] = oneDp[i + 1] + zeroCount;
+                oneCount ++;
+            }
+        }
+        
+        long ans = 0;
+        for (int i = 0; i &lt; s.length() - 2; i ++){
+            char c = s.charAt(i);
+            if (c == &#39;0&#39;){
+                ans += oneDp[i];
+            }else {
+                ans += zeroDp[i];
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>

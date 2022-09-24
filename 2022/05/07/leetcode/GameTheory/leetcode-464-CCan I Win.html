@@ -1,0 +1,137 @@
+<hr>
+<p>title: leetcode-464-CCan I Win<br>date: 2022-05-22 21:40:52<br>summary: 我能赢吗<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Game Theory</li>
+</ul>
+<hr>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a href="https://leetcode.cn/problems/can-i-win/">我能赢吗</a></p>
+<blockquote>
+<p>暴力尝试<br>记忆化搜索 - 存储已经尝试过的记录，再次遍历直接获取</p>
+</blockquote>
+<h3 id="最直观的暴力解"><a href="#最直观的暴力解" class="headerlink" title="最直观的暴力解"></a>最直观的暴力解</h3><pre><code class="java">class Solution {
+    
+    public static boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+
+        boolean[] dp = new boolean[maxChoosableInteger + 1];
+
+        return dfs0(dp, desiredTotal, 0);
+    }
+
+    private static boolean dfs0(boolean[] dp, int desiredTotal, int sum){
+
+        for (int i =  dp.length - 1; i &gt;= 1; i --){
+            if (!dp[i]){
+                dp[i] = true;
+
+                if (sum + i &gt;= desiredTotal) {
+                    dp[i] = false;
+                    return true;
+                }
+
+                // 当前玩家选择了 x 以后，判断对方玩家一定输吗？
+                if (dfs1(dp, desiredTotal, sum + i)) {
+                    dp[i] = false;
+                    return true;
+                }
+                dp[i] = false;
+            }
+        }
+        return false;
+
+    }
+
+    private static boolean dfs1(boolean[] dp, int desiredTotal, int sum){
+
+        for (int i =  dp.length - 1; i &gt;= 1; i --){
+            if (!dp[i]){
+                dp[i] = true;
+                if (sum + i &gt;= desiredTotal) {
+                    dp[i] = false;
+                    return false;
+                }
+                // 当前玩家选择了 x 以后，判断对方玩家一定输吗？
+                if (!dfs0(dp, desiredTotal, sum + i)) {
+                    dp[i] = false;
+                    return false;
+                }
+                dp[i] = false;
+            }
+        }
+        return true;
+    }
+}
+</code></pre>
+<h3 id="暴力解的优化"><a href="#暴力解的优化" class="headerlink" title="暴力解的优化"></a>暴力解的优化</h3><pre><code class="java">class Solution {
+    
+    public static boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if (desiredTotal &gt; (1 + maxChoosableInteger) * maxChoosableInteger / 2){
+            return false;
+        }
+        boolean[] dp = new boolean[maxChoosableInteger + 1];
+
+        return dfs(dp, desiredTotal, 0);
+    }
+
+    private static boolean dfs(boolean[] dp, int desiredTotal, int sum){
+        
+        for (int i =  dp.length - 1; i &gt;= 1; i --){
+            if (!dp[i]){
+                dp[i] = true;
+                if (sum + i &gt;= desiredTotal) {
+                    dp[i] = false;
+                    return true;
+                }
+                
+                if (!dfs(dp, desiredTotal, sum + i)) {
+                    dp[i] = false;
+                    return true;
+                }
+                dp[i] = false;
+            }
+        }
+        return false;
+    }
+}
+</code></pre>
+<h3 id="记忆化优化"><a href="#记忆化优化" class="headerlink" title="记忆化优化"></a>记忆化优化</h3><pre><code class="java">class Solution {
+    
+    Map&lt;Integer,Boolean&gt; map;
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if (desiredTotal &gt; (1 + maxChoosableInteger) * maxChoosableInteger / 2){
+            return false;
+        }
+        boolean[] dp = new boolean[maxChoosableInteger + 1];
+        map = new HashMap&lt;&gt;();
+        return dfs(dp, desiredTotal, 0, 0);
+    }
+
+    private boolean dfs(boolean[] dp, int desiredTotal, int sum,int cur){
+        Boolean b = map.get(cur);
+        if (b != null){
+            return b;
+        }
+        for (int i =  dp.length - 1; i &gt;= 1; i --){
+            if (!dp[i]){
+                if (sum + i &gt;= desiredTotal) {
+                    map.put(setBits(cur, i), true);
+                    return true;
+                }
+                dp[i] = true;
+                if (!dfs(dp, desiredTotal, sum + i, setBits(cur, i))) {
+                    dp[i] = false;
+                    map.put(setBits(cur, i), false);
+                    map.put(cur, true);
+                    return true;
+                }
+                dp[i] = false;
+            }
+        }
+        map.put(cur, false);
+        return false;
+    }
+
+    private int setBits(int cur, int index){
+        return cur | (1 &lt;&lt; (index - 1));
+    }
+}
+</code></pre>

@@ -1,0 +1,22 @@
+<hr>
+<p>title: leetcode-2001-Number of Pairs of Interchangeable Rectangles<br>date: 2022-06-03 20:20:52<br>summary: 可互换矩形的组数<br>categories: leetcode<br>tags:</p>
+<hr>
+<h2 id="可互换矩形的组数"><a href="#可互换矩形的组数" class="headerlink" title="可互换矩形的组数"></a>可互换矩形的组数</h2><p><a href="https://leetcode.cn/problems/number-of-pairs-of-interchangeable-rectangles/">leetcode-2001-Number of Pairs of Interchangeable Rectangles</a></p>
+<pre><code class="java">class Solution {
+    public long interchangeableRectangles(int[][] rectangles) {
+        long ans = 0;
+        Map&lt;Double, Integer&gt; map = new HashMap&lt;&gt;();
+        for (int i = rectangles.length - 1; i &gt;= 0; i --){
+            double r = rectangles[i][0] / (double)(rectangles[i][1]);
+            Integer v = map.get(r);
+            if (v == null){
+                map.put(r, 1);
+            }else {
+                ans += v;
+                map.put(r, v + 1);
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>

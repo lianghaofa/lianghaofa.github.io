@@ -1,0 +1,45 @@
+<hr>
+<p>title: leetcode-655-Print Binary Tree<br>date: 2022-06-04 16:40:52<br>summary: 输出二叉树<br>categories: leetcode<br>tags:</p>
+<hr>
+<h2 id="输出二叉树"><a href="#输出二叉树" class="headerlink" title="输出二叉树"></a>输出二叉树</h2><p><a href="https://leetcode.cn/problems/print-binary-tree/">leetcode-655-Print Binary Tree</a></p>
+<pre><code class="java">class Solution {
+    public List&lt;List&lt;String&gt;&gt; printTree(TreeNode root) {
+
+        List&lt;List&lt;String&gt;&gt; ans = new ArrayList&lt;&gt;();
+        int rows = getDepth(root);
+        int c = (int) Math.pow(2, rows - 1);
+        int cols = (c - 1) * 2 + 1;
+        String[][] chars = new String[rows][cols];
+        write(root, 0, cols,0 ,chars);
+        for (int i = 0; i &lt; rows; i ++){
+            List&lt;String&gt; list = new ArrayList&lt;&gt;();
+            for (int j = 0; j &lt; cols; j ++){
+                if (chars[i][j] == null){
+                    list.add(&quot;&quot;);
+                }else {
+                    list.add(chars[i][j]);
+                }
+            }
+            ans.add(list);
+        }
+        return ans;
+    }
+
+    public void write(TreeNode root, int l, int r, int rows ,String[][] chars) {
+          if (root == null){
+              return;
+          }
+          int mid = l + (r - l &gt;&gt; 1);
+        chars[rows][mid] = String.valueOf(root.val);
+        write(root.left, l, mid - 1,rows  + 1, chars);
+        write(root.right,mid + 1, r, rows + 1 , chars);
+    }
+    
+    private int getDepth(TreeNode root){
+          if (root == null){
+              return 0;
+          }
+          return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+    }
+}
+</code></pre>

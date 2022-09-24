@@ -1,0 +1,72 @@
+<hr>
+<p>title: leetcode-752-Open the Lock<br>date: 2022-05-08 15:40:52<br>summary: 打开转盘锁<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="打开转盘锁"><a href="#打开转盘锁" class="headerlink" title="打开转盘锁"></a>打开转盘锁</h2><p><a href="https://leetcode.cn/problems/open-the-lock/">leetcode-752-Open the Lock</a></p>
+<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><blockquote>
+<p>通俗来说就是枚举</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public static int openLock(String[] deadends, String target) {
+        Set&lt;String&gt; deadSet = new HashSet&lt;&gt;(Arrays.asList(deadends));
+        if (deadSet.contains(&quot;0000&quot;) || deadSet.contains(target)){
+            return -1;
+        }
+        if (&quot;0000&quot;.equals(target)){
+            return 0;
+        }
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(&quot;0000&quot;);
+        int count = 0;
+        int size = queue.size();
+        while (!queue.isEmpty()){
+
+            while (size &gt; 0){
+                String s = queue.poll();
+                size --;
+                String[] res = transfer(s.toCharArray());
+                for (String r : res) {
+                    if (!deadSet.contains(r)) {
+                        if (r.equals(target)){
+                            return count + 1;
+                        }
+                        queue.add(r);
+                        deadSet.add(r);
+                    }
+                }
+            }
+            size = queue.size();
+            count ++;
+        }
+        return -1;
+    }
+
+    private static String[] transfer(char[] str){
+        // &#39;9&#39; 57
+        // &#39;0&#39; 48
+        String[] ans = new String[str.length * 2];
+        int cur = 0;
+        for (int i = 0; i &lt; str.length; i ++){
+            int c = (str[i]);
+            // ++
+            if (c == 57){
+                str[i] = &#39;0&#39;;
+            }else {
+                str[i] = (char) (c + 1);
+            }
+            ans[cur ++] = new String(str);
+            // --
+            if (c == 48){
+                str[i] = &#39;9&#39;;
+            }else {
+                str[i] = (char) (c - 1);
+            }
+            ans[cur ++] = new String(str);
+            str[i] = (char) c;
+        }
+        return ans;
+    }
+}
+</code></pre>

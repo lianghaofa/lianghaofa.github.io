@@ -1,0 +1,42 @@
+<hr>
+<p>title: leetcode-1498-Number of Subsequences That Satisfy the Given Sum Condition<br>date: 2022-05-16 09:10:52<br>summary: 满足条件的子序列数目<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>双指针</li>
+</ul>
+<hr>
+<h2 id="满足条件的子序列数目"><a href="#满足条件的子序列数目" class="headerlink" title="满足条件的子序列数目"></a>满足条件的子序列数目</h2><p><a href="https://leetcode.cn/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/">leetcode-1498-Number of Subsequences That Satisfy the Given Sum Condition</a></p>
+<blockquote>
+<p>排序<br>0 -&gt; nums.length - 1, 累加所有的可能性</p>
+</blockquote>
+<h3 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h3><pre><code class="java">class Solution {
+
+    static final int P = 1000000007;
+    
+    public static int numSubseq(int[] nums, int target) {
+
+        Arrays.sort(nums);
+        int ans = 0;
+        
+        int r = nums.length;
+        int n = nums.length, mod = (int)1e9 + 7;
+        int[] pows = new int[n];
+        pows[0] = 1;
+        for (int i = 1 ; i &lt; n ; ++i) {
+            pows[i] = pows[i - 1] * 2 % mod;
+        }
+        // 以 i 开头的有多少个
+        for (int i = 0; i &lt; nums.length; i ++){
+            while (r - 1 &gt;= i &amp;&amp; nums[r - 1] + nums[i] &gt; target){
+                r --;
+            }
+            if (r - 1 &lt; i){
+                break;
+            }
+            int count = (r - 1) - (i + 1) + 1;
+            ans += pows[count];
+            ans %= P;
+        }
+        return ans;
+    }
+}
+</code></pre>

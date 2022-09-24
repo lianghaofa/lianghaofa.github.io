@@ -1,0 +1,27 @@
+<hr>
+<p>title: leetcode-153-Find Minimum in Rotated Sorted Array<br>date: 2022-04-30 23:50:52<br>summary: 寻找旋转排序数组中的最小值<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="寻找旋转排序数组中的最小值"><a href="#寻找旋转排序数组中的最小值" class="headerlink" title="寻找旋转排序数组中的最小值"></a>寻找旋转排序数组中的最小值</h2><blockquote>
+<p>由于 值 互不相同<br>要么右侧递增，要么左侧递增<br>右侧递增，ans &#x3D; nums[mid], 向左侧继续寻找<br>左侧递增，ans &#x3D; nums[l], 向右侧继续寻找</p>
+</blockquote>
+<p><a href="https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/">leetcode-153-Find Minimum in Rotated Sorted Array</a></p>
+<pre><code class="java">    public int findMin(int[] nums) {
+        int ans = Integer.MAX_VALUE;
+        int l = 0;
+        int r = nums.length - 1;
+        while (l &lt;= r){
+            int mid = l + (r - l &gt;&gt; 1);
+            if (nums[mid] &lt; nums[r]){
+                ans = Math.min(ans, nums[mid]);
+                r = mid - 1;
+            }else {
+                ans = Math.min(ans, nums[l]);
+                l = mid + 1;
+            }
+        }
+        return ans;
+    }
+</code></pre>

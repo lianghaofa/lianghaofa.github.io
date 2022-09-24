@@ -1,0 +1,21 @@
+<hr>
+<p>title: leetcode-1557-FindSmallestSetOfVertices<br>date: 2022-04-21 19:56:52<br>summary: 可以到达所有点的最少点数目<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>图</li>
+</ul>
+<hr>
+<h2 id="LargestPerimeter"><a href="#LargestPerimeter" class="headerlink" title="LargestPerimeter"></a>LargestPerimeter</h2><p><a href="https://leetcode-cn.com/problems/minimum-number-of-vertices-to-reach-all-nodes/">leetcode-1557-FindSmallestSetOfVertices</a></p>
+<pre><code class="java">    public List&lt;Integer&gt; findSmallestSetOfVertices(int n, List&lt;List&lt;Integer&gt;&gt; edges) {
+        List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
+        int[] in = new int[n];
+        for (List&lt;Integer&gt; list : edges) {
+            in[list.get(1)]++;
+        }
+        for (int i = 0; i &lt; in.length; i ++){
+            if (in[i] == 0){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+</code></pre>

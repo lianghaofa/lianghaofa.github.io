@@ -1,0 +1,20 @@
+<hr>
+<p>title: leetcode-918-Maximum Sum Circular Subarray<br>date: 2022-06-02 14:20:52<br>summary: 复写零<br>categories: leetcode<br>tags: </p>
+<hr>
+<h2 id="环形子数组的最大和"><a href="#环形子数组的最大和" class="headerlink" title="环形子数组的最大和"></a>环形子数组的最大和</h2><p><a href="https://leetcode.cn/problems/maximum-sum-circular-subarray/">leetcode-918-Maximum Sum Circular Subarray</a></p>
+<p><img src="/medias/LeetCode/1654151017.jpg" alt="环形子数组的最大和"></p>
+<pre><code class="java">class Solution {
+    public int maxSubarraySumCircular(int[] A) {
+        int total = 0, maxSum = A[0], curMax = 0, minSum = A[0], curMin = 0;
+        for (int a : A) {
+            curMax = Math.max(curMax + a, a);
+            maxSum = Math.max(maxSum, curMax);
+            curMin = Math.min(curMin + a, a);
+            minSum = Math.min(minSum, curMin);
+            total += a;
+        }
+        return maxSum &gt; 0 ? Math.max(maxSum, total - minSum) : maxSum;
+    }
+
+}
+</code></pre>

@@ -1,0 +1,43 @@
+<hr>
+<p>title: leetcode-1091-ShortestPathBinaryMatrix<br>date: 2022-04-20 19:56:52<br>summary: 二进制矩阵中的最短路径<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="LargestPerimeter"><a href="#LargestPerimeter" class="headerlink" title="LargestPerimeter"></a>LargestPerimeter</h2><p><a href="https://leetcode-cn.com/problems/shortest-path-in-binary-matrix/">leetcode-1091-ShortestPathBinaryMatrix</a><br>BFS</p>
+<pre><code class="java">class Solution {
+    private int dir[][] = new int[][]{{0,1},{0,-1},{1,0},{-1,0},{1,-1},{-1,1},{-1,-1},{1,1}};
+
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        if (grid[0][0] == 1 || grid[m - 1][n - 1] == 1) {
+            return -1;
+        }
+        boolean[][] visited = new boolean[m][n];
+        visited[0][0] = true;
+        Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(new int[]{0, 0});
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i &lt; size; i++) {
+                int[] pop = queue.remove();
+                if (pop[0] == m - 1 &amp;&amp; pop[1] == n - 1) {
+                    return ans + 1;
+                }
+                for (int k = 0; k &lt; 8; k++) {
+                    int nextX = dir[k][0] + pop[0];
+                    int nextY = dir[k][1] + pop[1];
+                    if (nextX &gt;= 0 &amp;&amp; nextX &lt; m &amp;&amp; nextY &gt;= 0 &amp;&amp; nextY &lt; n &amp;&amp; !visited[nextX][nextY] &amp;&amp; grid[nextX][nextY] == 0) {
+                        queue.add(new int[]{nextX, nextY});
+                        visited[nextX][nextY] = true;
+                    }
+                }
+            }
+            ans ++;
+        }
+        return -1;
+    }
+}
+</code></pre>

@@ -1,0 +1,37 @@
+<hr>
+<p>title: leetcode-1870-Minimum Speed to Arrive on Time.<br>date: 2022-05-17 13:50:52<br>summary: 准时到达的列车最小时速<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="准时到达的列车最小时速"><a href="#准时到达的列车最小时速" class="headerlink" title="准时到达的列车最小时速"></a>准时到达的列车最小时速</h2><p><a href="https://leetcode.cn/problems/minimum-speed-to-arrive-on-time/">leetcode-1870-Minimum Speed to Arrive on Time.</a></p>
+<pre><code class="java">class Solution {
+    public int minSpeedOnTime(int[] dist, double hour) {
+        int  l = 1;
+        int r = 10_000_000;
+        int ans = -1;
+        while (l &lt;= r){
+            int speed = l + (r - l &gt;&gt; 1);
+            if (canWork(dist, speed, hour)){
+                ans = speed;
+                r = speed - 1;
+            }else {
+                l = speed + 1;
+            }
+        }
+        return ans;
+    }
+
+    private boolean canWork(int[] dist, int speed, double hour) {
+        double c = 0;
+        for (int i = 0; i &lt; dist.length - 1;i ++){
+            c += (dist[i] + speed - 1) / speed;;
+            if (c &gt; hour){
+                return false;
+            }
+        }
+        c += dist[dist.length - 1] / (double) (speed);
+        return c &lt;= hour;
+    }
+}
+</code></pre>

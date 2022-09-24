@@ -1,0 +1,45 @@
+<hr>
+<p>title: leetcode-120-MinimumTotal<br>date: 2022-05-05 14:40:52<br>summary: 三角形最小路径和<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="三角形最小路径和"><a href="#三角形最小路径和" class="headerlink" title="三角形最小路径和"></a>三角形最小路径和</h2><p><a href="https://leetcode-cn.com/problems/triangle/">leetcode-120-MinimumTotal</a></p>
+<h4 id="自顶向下"><a href="#自顶向下" class="headerlink" title="自顶向下"></a>自顶向下</h4><pre><code class="java">    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+        if (triangle.size() == 0){
+            return 0;
+        }
+        for (int i = 1; i &lt; triangle.size(); i ++){
+            List&lt;Integer&gt; curList = triangle.get(i);
+            List&lt;Integer&gt; preList = triangle.get(i - 1);
+            for (int j = 0; j &lt; curList.size(); j++){
+                if (j == 0){
+                    curList.set(j,curList.get(j) + preList.get(j));
+                }else if (j == curList.size() - 1){
+                    curList.set(j,curList.get(j) + preList.get(j - 1));
+                }else {
+                    curList.set(j,curList.get(j) + Math.min(preList.get(j - 1),preList.get(j)));
+                }
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        List&lt;Integer&gt; curList = triangle.get(triangle.size() - 1);
+        for (Integer integer : curList) {
+            min = Math.min(integer, min);
+        }
+        return min;
+    }
+</code></pre>
+<h4 id="自低向上"><a href="#自低向上" class="headerlink" title="自低向上"></a>自低向上</h4><pre><code class="java">    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+        if (triangle.size() == 0 || triangle.get(0).size() == 0){
+            return -1;
+        }
+        int[] dp = new int[triangle.size() + 1];
+        for (int i = triangle.size() - 1; i &gt;= 0; i --){
+            for (int j = 0;j &lt;= i ; j ++){
+                dp[j] = Math.min(dp[j],dp[j + 1]) + triangle.get(i).get(j);
+            }
+        }
+        return dp[0];
+    }
+</code></pre>

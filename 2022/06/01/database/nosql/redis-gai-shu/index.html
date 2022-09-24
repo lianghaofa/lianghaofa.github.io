@@ -1,0 +1,1544 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Redis 概述, Hexo">
+    <meta name="description" content="Redis 概述">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    
+
+    <title>Redis 概述 | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+<!--                <a href="/" class="waves-effect waves-light">-->
+<!--                    -->
+<!--                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">-->
+<!--                    -->
+<!--                    <span class="logo-span">Hexo</span>-->
+<!--                </a>-->
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>Contact</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/lianghaofa" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/lianghaofa" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Redis 概述</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Redis/">
+                                <span class="chip bg-color">Redis</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Redis/" class="post-category">
+                                Redis
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2022-06-01
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-08-24
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    2.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    10 Min
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Redis-概述"><a href="#Redis-概述" class="headerlink" title="Redis 概述"></a>Redis 概述</h2><p>MemoryCache - K,V</p>
+<p>Redis - K,V</p>
+<p>MemoryCache 的 V 只支持单一类型。  </p>
+<p>Redis 的 V 支持多种类型。</p>
+<ul>
+<li><p>strings</p>
+</li>
+<li><p>hashes</p>
+</li>
+<li><p>lists</p>
+</li>
+<li><p>sets</p>
+</li>
+<li><p>sorted sets</p>
+</li>
+</ul>
+<p>MemoryCache 的 V 存放单一类型，只要转换后，也可能存放各种数据结构。为何实现了具体类型 redis 更好？</p>
+<p>假设，寻找lists 里的index 为 100 的值， redis 只需要把 index &#x3D; 100 的数据 load 到内存，<br>但  MemoryCache 需要把该 V 的所有数据load 到内存， 然后进行数据类型的转换。简单的说，如果K,V，V是字符串，那么两者性能差别不大。</p>
+<p>Linux - 主要的相关系统调用 </p>
+<p>read </p>
+<p>socket() 可阻塞，可不阻塞 </p>
+<p>BIO 如果需要读文件，此时阻塞，处理完当前请求，再处理下一个请求</p>
+<p>NIO 同步，非阻塞。同步 ？ 如果有1000个请求，有1000个文件描述符，每次都要系统调用， ？？？ 有办法不需要系统调用？  那得需要改内核</p>
+<p>多路复用NIO select() 1000个请求，给了系统1000个文件描述符，调用一次系统调用。当某些文件已经读取完成，向用户返回该文件描述符，用户线程可以调用read函数，直接获取数据。</p>
+<p>事件驱动<br>select() bitmap</p>
+<p>epoll() 链表 + 红黑树</p>
+<p>红黑树 - 存储事件</p>
+<p>为什么是红黑树 ？ 因为有些情况下可能需要删除某些事件</p>
+<p>链表 - 完成的事件，链表</p>
+<p>回调函数，再怎么回调。我调用你的事件，不需要你去监听。内核是否能触发用户的函数</p>
+<p><strong>妈的，你调用完直接返回数据好了，别烦用户了</strong></p>
+<p>mmap 系统调用</p>
+<p>减少内核态与用户态的切换，共享空间。 内核态把数据写到共享空间，</p>
+<p>sendfile 系统调用</p>
+<p>read(fd3),write(fd4)</p>
+<p>ZeroCopy - sendfile(out,in)   假设fd4为网卡，fd3 sendfile(fd4,fd3)， 把 fd3 读取完后直接发送到网卡。</p>
+<p>例如：<br>Kafka 生产者 写数据使用 mmap 写，写共享空间</p>
+<p>Kafka 消费者 获取数据， 使用 sendfile 读取磁盘数据后直接向相关端口发送数据</p>
+<p>02 redis(二) 03 </p>
+<p>原子性操作</p>
+<p>二进制安全</p>
+<p>编码与解码方式的一致</p>
+<p>统一存储 字节数组，编码解码交由用户处理。</p>
+<p>setbit</p>
+<p>redis BloomFilter</p>
+<h3 id="Server-assisted-client-side-caching"><a href="#Server-assisted-client-side-caching" class="headerlink" title="Server-assisted, client-side caching"></a>Server-assisted, client-side caching</h3><p>The Redis client-side caching support is called Tracking, and has two modes:</p>
+<p>在默认模式下，服务器会记住给定客户端访问的键，并在相同的键被修改时发送无效消息。 这将占用服务器端的内存，但是只会为客户端内存中可能存在的一组键发送无效消息。</p>
+<p>1.如果需要，客户端可以启用跟踪。 连接在没有启用跟踪的情况下启动。<br>2.当启用跟踪时，服务器会在连接生命周期内记住每个客户端请求的键(通过发送关于这些键的读取命令)。<br>3.当某个密钥被某些客户端修改，或者因为它具有关联的过期时间而被驱逐，或者因为maxmemory策略而被驱逐时，所有启用跟踪并可能缓存了该密钥的客户端都会收到无效消息通知。<br>4.当客户端接收到无效消息时，他们需要删除相应的键，以避免提供过时的数据。</p>
+<p>在广播模式下，服务器不会试图记住给定客户端访问的键，因此这种模式在服务器端根本不消耗任何内存。 相反，客户端订阅诸如object:或user:这样的键前缀，并在每次触摸与订阅的前缀相匹配的键时收到通知消息。</p>
+<p>1.服务器将记住可能在单个全局表中缓存了给定键的客户端列表。 该表称为失效表。 失效表可以包含最大数量的表项。 如果插入了一个新的密钥，服务器可能会通过假装这个密钥被修改(即使它没有被修改)来清除旧的条目，并向客户机发送一条无效消息。 这样做，它就可以回收该密钥使用的内存，即使这会迫使拥有该密钥本地副本的客户端将其逐出。<br>2.在失效表内部，我们真的不需要存储指向客户端结构的指针，这将在客户端断开连接时强制一个垃圾收集过程:相反，我们所做的只是存储客户端ID(每个Redis客户端都有一个唯一的数字ID)。 如果客户端断开连接，信息将被增量垃圾收集，因为缓存插槽无效。<br>3.有一个单键名称空间，不按数据库编号划分。 因此，如果一个客户端正在缓存数据库2中的关键foo，而其他客户端改变了数据库3中的关键foo的值，仍然会发送一条无效消息。 通过这种方式，我们可以忽略数据库编号，从而减少内存使用量和实现复杂性。  </p>
+<p>单线程</p>
+<p>为啥单线程可以这么快？</p>
+<p>单线程指的是处理请求的单线程，IO threads 是多线程，redis 默认 io写 多线程， 不开启读的多线程，读由主线程串行执行。</p>
+<p>redis 如何rehash? 如何扩容？</p>
+<p>两个数组 dictEntry</p>
+<p>100 % N</p>
+<p>N组，每组2个存储单元，hash后直接操作单元0，需要扩容的话，利用单元1扩容，扩容完单元0与单元1的指针互换。</p>
+<p>扩容期间，新增的写，写到单元1。</p>
+<p>读数据时，需要读取两个表。</p>
+<p>NoSQL 集群化，如何进行扩容？</p>
+<p>网卡IO层获取数据的形式，字节(流)数组。</p>
+<p>value 的最长长度。512M？</p>
+<p>readQueryFromClient</p>
+<p>encoding</p>
+<p>1.客户端发来的数据</p>
+<p>2.OBJ_STRING 统一封装</p>
+<p>3.封装完之后进行 encoding 方式</p>
+<p>目的 - 节省存储空间</p>
+<p>“9876543210” 存储字符需要10个字节，存储为INT只需要8个字节，64位(操作系统位数)</p>
+<p>“98765432100000” 存储字符需要15个字节，存储为INT只需要8个字节，64位(操作系统位数)</p>
+<p>OBJ_STRING 0</p>
+<ul>
+<li><p>OBJ_ENCODING_EMBSTR  内存连续的空间，大小64B， 一个缓存行</p>
+</li>
+<li><p>OBJ_ENCODING_RAW  </p>
+</li>
+<li><p>OBJ_ENCODING_INT</p>
+</li>
+</ul>
+<p>encoding会在底层自动转换。</p>
+<p>OBJ_LIST  1</p>
+<ul>
+<li><p>OBJ_ENCODING_QUICKLIST -&gt; ZIPLIST</p>
+</li>
+<li><p>OBJ_ENCODING_ZIPLIST</p>
+</li>
+</ul>
+<p>OBJ_SET 2</p>
+<ul>
+<li><p>OBJ_ENCODING_HT</p>
+</li>
+<li><p>OBJ_ENCODING_INSET</p>
+</li>
+</ul>
+<p>OBJ_ZSET 3</p>
+<ul>
+<li><p>OBJ_ENCODING_SKIPLIST</p>
+</li>
+<li><p>OBJ_ENCODING_ZIPLIST</p>
+</li>
+</ul>
+<p>数据量小直接使用ZIPLIST</p>
+<p>数量量大 ZIPLIST +  SKIPLIST，提高速度</p>
+<p>OBJ_HASH 4</p>
+<ul>
+<li>OBJ_ENCODING_ZIPLIST</li>
+</ul>
+<h3 id="SDS-simple-dynamic-string"><a href="#SDS-simple-dynamic-string" class="headerlink" title="SDS - simple dynamic string"></a>SDS - simple dynamic string</h3><p>1.二进制安全<br>2.内存预分配，避免频繁的内存分配</p>
+<p>char data[] &#x3D; “guojia”;</p>
+<p>默认有\0，遇到\0就停止。</p>
+<p>socket 接收数据 “guo\0jia”;</p>
+<p>此时可能导致数据丢失。</p>
+<p>SDS</p>
+<p>len : 7</p>
+<p>char data[] &#x3D; “guo\0jia”;</p>
+<p>少于1M，成倍扩容，大于等于1M，每次扩1M</p>
+<p>redis 数据存储方式</p>
+<p>数组 + 链表</p>
+<p>hash(key) -&gt; (非常大的数) % m     redis 默认 16个DB</p>
+<p>如何区分value数据类型？ 命令操作名称，get, lpush</p>
+<p>缓存行 64字节  </p>
+<p>redisObject, 16字节  剩余48字节  ， sds 4 字节，剩余44字节， value 少于等于44字节，直接放 value.  embstr 就是此含义。</p>
+<p>如果超过44字节，redis 转换为 raw 类型</p>
+<p>sdshdr5 少于等于32字节</p>
+<p>type(3b) + len(5b) + buff(32B)</p>
+<p>5b表示长度</p>
+<p>sdshdr8</p>
+<p>8b表示长度</p>
+<p>.<br>.<br>.</p>
+<p>sdshdr64</p>
+<p>64b表示长度</p>
+<p>redis 6.0 批处理读，批处理读操作？ 读与写分开 ？ </p>
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><p>ziplist - </p>
+<p>quicklist - 双端链表</p>
+<p>内存空间有限，尽可能压缩数据空间。</p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p>全是数字的情况下，encoding - intset</p>
+<p>否则 encoding - hashtable</p>
+<h3 id="zset-有序-set"><a href="#zset-有序-set" class="headerlink" title="zset 有序 set"></a>zset 有序 set</h3><p>底层 字典(dict) + 跳表(skiplist)</p>
+<p>O(1) 获取元素，</p>
+<p>跳表(skiplist) O(logN) 排序</p>
+<p>ziplist,元素个数超出 128, skiplist</p>
+<p>ziplist,单个元素大小超过64 B ,skiplist</p>
+<p>排序方式，分值score，用户程序定义。</p>
+<p>根据分值，根据顺序获取数据。</p>
+<p>分值增加</p>
+<p>并集、交集</p>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>Linux 父子进程</p>
+<p>父进程的数据，子进程是否能看到？</p>
+<p>子进程的修改不会影响到父进程；</p>
+<p>父进程的修改也不会影响到子进程；</p>
+<h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h4><p>时点性</p>
+<p>save - 阻塞，场景：关机维护</p>
+<p>bgsave - fork创建子进程</p>
+<p>配置文件</p>
+<p>等OS后台进程写磁盘</p>
+<p>设置 多少次更新操作或时间段 生成快照</p>
+<p>后台进程生成快照，不影响主进程。</p>
+<p>copyofwrite.  父进程修改a 数据，发现当前的a 只读，开启新的地址空间，a 指向新的内存空间</p>
+<p>生成快照的过程</p>
+<p>1.主进程的写操作，不在快照中执行，快照只能读。</p>
+<p>2.后台进行只负责生成当前时间点的快照，把当前的快照写入磁盘。</p>
+<p>提供数据的弱一致性。</p>
+<p>弊端</p>
+<ul>
+<li><p>只有一个快照，dump.rdb</p>
+</li>
+<li><p>Linux fork 子进程后，父进程的内存页只读，但进程需要写操作时会触发中断，如果大量的写操作会影响性能。</p>
+</li>
+</ul>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h4><p>everyseconbd - 每秒fsync一次磁盘</p>
+<p>always - 每次更新，fsync一次磁盘</p>
+<p>no - 让OS后台进程决定，OS默认30秒fsync一次磁盘</p>
+<p>OS 后台刷内存，超5秒或pagecache超10%，具体参数可配置。</p>
+<p>DIO ？ 可以跨过操作系统内核？</p>
+<h4 id="混合模式"><a href="#混合模式" class="headerlink" title="混合模式"></a>混合模式</h4><p>启动使用RDB文件，启动完AOF。</p>
+<p>RDB + 增量AOF</p>
+<h3 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h3><h4 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h4><p>3.0 之前 哨兵模式</p>
+<p>访问 sentinel 集群，sentinel 集群处理分发读写</p>
+<p>监控，主从切换，通知</p>
+<p>master 负责写</p>
+<p>slave 负责读</p>
+<p>哨兵 如何选主？？？？</p>
+<h4 id="cluster"><a href="#cluster" class="headerlink" title="cluster"></a>cluster</h4><p>3.0 之后</p>
+<p>Master0 - slave0,slave1…  </p>
+<p>Master1 - slave0,slave1…</p>
+<p>Master2 - slave0,slave1…</p>
+<p>Master负责读写，slave负责备份</p>
+<p>一致性哈希的思想</p>
+<p>CRC16进行映射</p>
+<p>无主模型</p>
+<p>redis 集群中每台服务器都存了所有的映射关系。先按规则映射到某一台，如果没有命中再映射返回给具体的服务器。</p>
+<p>数据分治的问题，聚合问题难以实现。 - 事务问题，交集</p>
+<p>hash tag</p>
+<h3 id="有序与无序"><a href="#有序与无序" class="headerlink" title="有序与无序"></a>有序与无序</h3><p>注意同一客户端发来的请求，是有序的，TCP有序的前提下。</p>
+<p>亲密度处理。同一客户端、同一商品、同一业务发到同一服务器处理。 做有序</p>
+<p>数据倾斜</p>
+<p>1.某个key的访问量过大</p>
+<ol start="2">
+<li></li>
+</ol>
+<h3 id="缓存常见问题"><a href="#缓存常见问题" class="headerlink" title="缓存常见问题"></a>缓存常见问题</h3><h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><p>单个key</p>
+<p>业务请求的数据，缓存没有，但DB有。每次都请求DB</p>
+<h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><p>业务请求的数据，缓存与DB都没有</p>
+<p>布隆过滤器</p>
+<p>布隆过滤器的实现</p>
+<ul>
+<li><p>代码与bits数据都在客户端</p>
+</li>
+<li><p>代码在客户端，bits在redis</p>
+</li>
+<li><p>redis集成布隆过滤器模块</p>
+</li>
+</ul>
+<p>布隆过滤器缺点</p>
+<ul>
+<li>bits位只能更多，不可能减少</li>
+</ul>
+<p>如何支持数据的删除？？？</p>
+<ul>
+<li><p>布谷鸟过滤器(Cuckcoo Filter)</p>
+</li>
+<li><p>redis置null值，减轻DB压力</p>
+</li>
+</ul>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><p>大量的key失效，直接访问DB，对DB造成压力</p>
+<p>大量请求的到来，命中率低。</p>
+<p>一致性(双写)</p>
+<p>均分设置随机过期时间</p>
+<p>RDB 如何快速恢复 ？</p>
+<p>redis 只存内存，内存满了怎么办？  分片，代理？</p>
+<p>强依赖击穿方案</p>
+<p>有时候12点一过，大量数据必须得无效。</p>
+<h3 id="redis-数据同步"><a href="#redis-数据同步" class="headerlink" title="redis 数据同步"></a>redis 数据同步</h3><h3 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h3><p>Under Linux, fork() is implemented using copy-on-write</p>
+<p>子进程 fork 父进程，相当于对父进程进行了快照。</p>
+<p>父子进程访问共同的数据是访问同一地址，但如果父进程发生修改，父进程修改的数据会指向新的内存地址，子进程所对应的数据的内存地址仍然不变。</p>
+<h3 id="AKF"><a href="#AKF" class="headerlink" title="AKF"></a>AKF</h3><p>单机 - 主备</p>
+<p>单进程 - </p>
+<p>缓存</p>
+<p>数据库</p>
+<p>拆分业务 - 不同业务不同的redis</p>
+<p>主备 如何保持一致性？</p>
+<h3 id="redis-分布式锁"><a href="#redis-分布式锁" class="headerlink" title="redis 分布式锁"></a>redis 分布式锁</h3><p>1.setnx</p>
+<p>2.过期时间</p>
+<p>3.守护线程，多线程</p>
+<p>redission </p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Darren Leung</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://localhost:4001/2022/06/01/database/nosql/redis-gai-shu/">http://localhost:4001/2022/06/01/database/nosql/redis-gai-shu/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Darren Leung</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Redis/">
+                                    <span class="chip bg-color">Redis</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: null,
+        id: '2022-06-01T09-40-52',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2022/06/01/database/mybatis/my-batis-gai-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="My Batis 概述">
+                        
+                        <span class="card-title">My Batis 概述</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            My Batis 概述
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Spring-MVC/" class="post-category">
+                                    Spring MVC
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/My-Batis/">
+                        <span class="chip bg-color">My Batis</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/06/01/database/nosql/elastic-search-gai-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Elastic Search 概述">
+                        
+                        <span class="card-title">Elastic Search 概述</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Elastic Search 概述
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Elastic-Search/" class="post-category">
+                                    Elastic Search
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Elastic-Search/">
+                        <span class="chip bg-color">Elastic Search</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="470601889"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='one'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">Darren Leung</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">75.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/lianghaofa" class="tooltipped" target="_blank" data-tooltip="GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1016907063@qq.com" class="tooltipped" target="_blank" data-tooltip="email" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1016907063" class="tooltipped" target="_blank" data-tooltip="QQ: 1016907063" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

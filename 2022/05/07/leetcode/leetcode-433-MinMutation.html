@@ -1,0 +1,60 @@
+<hr>
+<p>title: leetcode-433-MinMutation<br>date: 2022-05-07 14:40:52<br>summary: 最小基因变化<br>categories: leetcode<br>tags: </p>
+<hr>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a href="https://leetcode-cn.com/problems/minimum-genetic-mutation/">leetcode-433-MinMutation</a></p>
+<pre><code class="java">class Solution {
+    public int minMutation(String start, String end, String[] bank) {
+        if (start.equals(end)){
+            return 0;
+        }
+        boolean checkInBank = false;
+        for (String value : bank) {
+            if (end.equals(value)) {
+                checkInBank = true;
+                break;
+            }
+        }
+        if (!checkInBank){
+            return -1;
+        }
+        Set&lt;String&gt; visited = new HashSet&lt;&gt;();
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(end);
+        visited.add(end);
+        int count = 1;
+        int depth = 1;
+        while (!queue.isEmpty()){
+            while (count &gt; 0){
+                String parent = queue.poll();
+                if (canTransfer(parent, start)){
+                    return depth;
+                }
+                for (int i = 0; i &lt; bank.length; i ++){
+                    String s = bank[i];
+                    if (!visited.contains(s) &amp;&amp; canTransfer(parent, s)){
+                        queue.add(s);
+                        visited.add(s);
+                    }
+                }
+                count --;
+            }
+            depth ++;
+            count = queue.size();
+        }
+        return -1;
+    }
+    
+    private boolean canTransfer(String s1, String s2){
+        int count = 0;
+        for (int i = 0; i &lt; Math.max(s1.length(), s2.length()); i ++){
+            if (s1.charAt(i) != s2.charAt(i)){
+                count ++;
+                if (count &gt;= 2){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+</code></pre>

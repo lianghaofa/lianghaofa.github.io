@@ -1,0 +1,71 @@
+<hr>
+<p>title: leetcode-767-Reorganize String<br>date: 2022-05-31 19:10:52<br>summary: 重构字符串<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>贪心</li>
+</ul>
+<hr>
+<h2 id="重构字符串"><a href="#重构字符串" class="headerlink" title="重构字符串"></a>重构字符串</h2><p><a href="https://leetcode.cn/problems/reorganize-string/">leetcode-767-Reorganize String</a></p>
+<h3 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h3><pre><code class="java">class Solution {
+
+    static class Node{
+        char c;
+        int cnt;
+        Node(char c, int cnt){
+            this.c = c;
+            this.cnt = cnt;
+        }
+    }
+
+    public static String reorganizeString(String s) {
+        if (s.length() &lt;= 1){
+            return s;
+        }
+        int[] arr = new int[26];
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i &lt; s.length(); i ++){
+            int index = s.charAt(i) - &#39;a&#39;;
+            arr[index] ++;
+            max = Math.max(max, arr[index]);
+        }
+        List&lt;List&lt;Character&gt;&gt; lists = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; max; i ++){
+            lists.add(new ArrayList&lt;&gt;());
+        }
+        char[] ans = new char[s.length()];
+        int index = 0;
+        PriorityQueue&lt;Node&gt; priorityQueue = new PriorityQueue&lt;&gt;(new Comparator&lt;Node&gt;() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o2.cnt - o1.cnt;
+            }
+        });
+        for (int i = 0; i &lt; arr.length; i ++){
+            if (arr[i] &gt; 0){
+                priorityQueue.add(new Node((char)(&#39;a&#39; + i), arr[i]));
+            }
+        }
+        while (!priorityQueue.isEmpty()){
+            Node node = priorityQueue.poll();
+            for (int i = 0; i &lt; node.cnt; i ++){
+                int bucket = index % max;
+                lists.get(bucket).add(node.c);
+                index ++;
+            }
+        }
+
+        if (lists.size() &gt; 1 &amp;&amp; lists.get(lists.size() - 2).size() == 1){
+            return &quot;&quot;;
+        }
+        index = 0;
+        for (int i = 0; i &lt; max; i ++){
+            List&lt;Character&gt; list = lists.get(i);
+            for (Character character : list) {
+                ans[index++] = character;
+            }
+        }
+
+        return new String(ans);
+    }
+
+}
+</code></pre>

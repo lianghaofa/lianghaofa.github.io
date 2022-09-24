@@ -1,0 +1,38 @@
+<hr>
+<p>title: leetcode-965-Univalued Binary Tree<br>date: 2022-05-24 12:40:52<br>summary: 单值二叉树<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Morris</li>
+</ul>
+<hr>
+<h2 id="单值二叉树"><a href="#单值二叉树" class="headerlink" title="单值二叉树"></a>单值二叉树</h2><p><a href="https://leetcode.cn/problems/univalued-binary-tree/">leetcode-965-Univalued Binary Tree</a></p>
+<pre><code class="java">class Solution {
+    public boolean isUnivalTree(TreeNode root) {
+        if (root == null){
+            return true;
+        }
+        int num = root.val;
+        TreeNode cur = root;
+        TreeNode mostRight = null;
+        while (cur != null){
+            mostRight = cur.left;
+            if (mostRight != null){
+                while (mostRight.right != null &amp;&amp; mostRight.right != cur){
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == cur){
+                    mostRight.right = null;
+                }else {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                    continue;
+                }
+            }
+            if (num != cur.val){
+                return false;
+            }
+            cur = cur.right;
+        }
+        return true;
+    }
+}
+</code></pre>

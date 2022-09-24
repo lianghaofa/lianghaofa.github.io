@@ -1,0 +1,20 @@
+<hr>
+<p>title: leetcode-976-LargestPerimeter<br>date: 2022-04-20 19:56:52<br>summary: 最大周长<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>排序</li>
+<li>贪心</li>
+</ul>
+<hr>
+<h2 id="LargestPerimeter"><a href="#LargestPerimeter" class="headerlink" title="LargestPerimeter"></a>LargestPerimeter</h2><p><a href="https://leetcode-cn.com/problems/largest-perimeter-triangle/">leetcode-976-LargestPerimeter</a><br>排序</p>
+<pre><code class="java">class Solution {
+    public int largestPerimeter(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = nums.length - 1; i &gt;= 2; i --){
+            if (nums[i] &lt; nums[i - 1] + nums[i - 2]){
+                return nums[i] + nums[i - 1] + nums[i - 2];
+            }
+        }
+        return 0;
+    }
+}
+</code></pre>

@@ -1,0 +1,34 @@
+<hr>
+<p>title: leetcode-1283-Find the Smallest Divisor Given a Threshold<br>date: 2022-05-06 09:40:52<br>summary: 使结果不超过阈值的最小除数<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="使结果不超过阈值的最小除数"><a href="#使结果不超过阈值的最小除数" class="headerlink" title="使结果不超过阈值的最小除数"></a>使结果不超过阈值的最小除数</h2><p><a href="https://leetcode-cn.com/problems/find-the-smallest-divisor-given-a-threshold/">leetcode-1283-Find the Smallest Divisor Given a Threshold</a></p>
+<pre><code class="java">class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int l = 1;
+        int r = 1_000_000;
+        int ans = 1;
+        while (l &lt;= r){
+            int mid = l + ( r - l &gt;&gt; 1);
+            if (div(nums, mid, threshold)){
+                ans = mid;
+                r = mid - 1;
+            }else {
+                l = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+
+    private boolean div(int[] nums, int b, int threshold){
+        int ans = 0;
+        for (int num : nums) {
+            ans += (num - 1) / b + 1;
+        }
+        return ans &lt;= threshold;
+    }
+}
+</code></pre>

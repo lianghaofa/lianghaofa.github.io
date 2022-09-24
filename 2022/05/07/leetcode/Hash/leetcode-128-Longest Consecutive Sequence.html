@@ -1,0 +1,31 @@
+<hr>
+<p>title: leetcode-128-Longest Consecutive Sequence<br>date: 2022-04-29 19:40:52<br>summary: 最接近原点的 K 个点<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Hash</li>
+</ul>
+<hr>
+<h2 id="最长连续序列"><a href="#最长连续序列" class="headerlink" title="最长连续序列"></a>最长连续序列</h2><p><a href="https://leetcode.cn/problems/longest-consecutive-sequence/">leetcode-128-Longest Consecutive Sequence</a></p>
+<blockquote>
+<p> set 去重，同时快速查询<br> 只能从开头的数字遍历</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+        for (int num : nums) {
+            set.add(num);
+        }
+        int ans = 0;
+        // 从开头的数字遍历       set 而不是 nums ，如果是 nums ，开头的数字出现多次，会出现重复遍历。
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int s = num + 1;
+                while (set.contains(s)){
+                    s ++;
+                }
+                ans = Math.max(ans, s - num);
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>

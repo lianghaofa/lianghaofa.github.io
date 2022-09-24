@@ -1,0 +1,58 @@
+<hr>
+<p>title: leetcode-1818-Minimum Absolute Sum Difference<br>date: 2022-05-17 15:40:52<br>summary: 绝对差值和<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="绝对差值和"><a href="#绝对差值和" class="headerlink" title="绝对差值和"></a>绝对差值和</h2><p><a href="https://leetcode.cn/problems/minimum-absolute-sum-difference/">leetcode-1818-Minimum Absolute Sum Difference</a></p>
+<pre><code class="java">public class MinAbsoluteSumDiff {
+
+    public static void main(String[] args) {
+        minAbsoluteSumDiff(new int[]{1,10,4,4,2,7}, new int[]{9,3,5,1,7,4});
+    }
+
+
+    static final int MOD = 1000000007;
+
+    public static int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
+
+        // 所有的绝对差值和
+        int abs = 0;
+        int maxn = Integer.MIN_VALUE;
+        int[] num3 = Arrays.copyOf(nums1, nums1.length);
+        Arrays.sort(num3);
+        for (int i = 0; i &lt; nums1.length; i ++){
+
+            int a = Math.abs(nums1[i] - nums2[i]);
+            abs = (abs + Math.abs(a)) % MOD;
+
+            int j = binarySearch(num3, nums2[i]);
+
+            if (j &lt; nums1.length) {
+                maxn = Math.max(maxn, a - (num3[j] - nums2[i]));
+            }
+            if (j &gt; 0) {
+                maxn = Math.max(maxn, a - (nums2[i] - num3[j - 1]));
+            }
+        }
+        return (abs - maxn + MOD) % MOD;
+    }
+
+    public static int binarySearch(int[] rec, int target) {
+        int low = 0, high = rec.length - 1;
+        if (rec[high] &lt; target) {
+            return high + 1;
+        }
+        while (low &lt; high) {
+            int mid = (high - low) / 2 + low;
+            if (rec[mid] &lt; target) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+
+}
+</code></pre>

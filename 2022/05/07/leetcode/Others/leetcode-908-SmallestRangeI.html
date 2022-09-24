@@ -1,0 +1,21 @@
+<hr>
+<p>title: leetcode-908-SmallestRangeI<br>date: 2022-04-25 19:40:52<br>summary: 最小差值 I<br>categories: leetcode</p>
+<hr>
+<h2 id="最小差值-I"><a href="#最小差值-I" class="headerlink" title="最小差值 I"></a>最小差值 I</h2><p><a href="https://leetcode-cn.com/problems/smallest-range-i/">leetcode-908-SmallestRangeI</a></p>
+<pre><code class="java">class Solution {
+    public int smallestRangeI(int[] nums, int k) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int num : nums) {
+            max = Math.max(max, num);
+            min = Math.min(min, num);
+        }
+        int a = Math.abs(max - min);
+        int b = 2 * k;
+        if (a &gt; b){
+            return a - b;
+        }
+        return 0;
+    }
+}
+</code></pre>

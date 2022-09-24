@@ -1,0 +1,37 @@
+<hr>
+<p>title: leetcode-1574-Shortest Subarray to be Removed to Make Array Sorted<br>date: 2022-05-15 09:10:52<br>summary: 删除最短的子数组使剩余数组有序<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>双指针</li>
+</ul>
+<hr>
+<h2 id="删除最短的子数组使剩余数组有序"><a href="#删除最短的子数组使剩余数组有序" class="headerlink" title="删除最短的子数组使剩余数组有序"></a>删除最短的子数组使剩余数组有序</h2><p><a href="https://leetcode.cn/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">leetcode-1574-Shortest Subarray to be Removed to Make Array Sorted</a></p>
+<h3 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h3><pre><code class="java">class Solution {
+    public int findLengthOfShortestSubarray(int[] arr) {
+        int left = 0;
+        while(left + 1 &lt; arr.length &amp;&amp; arr[left] &lt;= arr[left+1]) {
+            left++;
+        }
+        if(left == arr.length - 1) {
+            return 0;
+        }
+
+        int right = arr.length - 1;
+        while(right &gt; left &amp;&amp; arr[right-1] &lt;= arr[right]) {
+            right--;
+        }
+        int ans = Math.max(arr.length - right, left + 1);
+        int i = 0;
+        int j = right;
+        while (i &lt;= left &amp;&amp; j &lt; arr.length){
+            if (arr[j] &gt;= arr[i]){
+                ans = Math.max(ans, arr.length - j + i + 1);
+                i ++;
+            }else {
+                j ++;
+            }
+
+        }
+        return arr.length - ans;
+    }
+}
+</code></pre>

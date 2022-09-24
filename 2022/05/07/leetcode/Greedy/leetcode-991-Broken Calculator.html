@@ -1,0 +1,41 @@
+<hr>
+<p>title: leetcode-991-Broken Calculator<br>date: 2022-05-27 23:10:52<br>summary: 坏了的计算器<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>贪心</li>
+</ul>
+<hr>
+<h2 id="坏了的计算器"><a href="#坏了的计算器" class="headerlink" title="坏了的计算器"></a>坏了的计算器</h2><p><a href="https://leetcode.cn/problems/broken-calculator/">leetcode-991-Broken Calculator</a></p>
+<h3 id="暴力解"><a href="#暴力解" class="headerlink" title="暴力解"></a>暴力解</h3><pre><code class="java">    public int brokenCalc(int startValue, int target) {
+
+        if (startValue == target){
+            return 0;
+        }
+        int step = 0;
+        while (target != startValue){
+            if (target &gt; startValue &amp;&amp; target % 2 == 0){
+                target /= 2;
+            }else {
+                target += 1;
+            }
+            step ++;
+        }
+        return step;
+    }
+</code></pre>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><pre><code class="java">    public int brokenCalc(int startValue, int target) {
+
+        if (startValue == target){
+            return 0;
+        }
+        int step = 0;
+        while (target &gt; startValue){
+            if (target % 2 == 0){
+                target /= 2;
+            }else {
+                target += 1;
+            }
+            step ++;
+        }
+        return step + (startValue - target);
+    }
+</code></pre>

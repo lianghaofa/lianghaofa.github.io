@@ -1,0 +1,79 @@
+<hr>
+<p>title: leetcode-994-OrangesRotting<br>date: 2022-04-20 19:56:52<br>summary: Rotting Oranges<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>图</li>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><p><a href="https://leetcode-cn.com/problems/rotting-oranges/">leetcode-994-OrangesRotting</a></p>
+<h3 id="Why-BFS"><a href="#Why-BFS" class="headerlink" title="Why BFS?"></a>Why BFS?</h3><p>网格遍历基本套路：<br>1.DFS<br>2.BFS</p>
+<h3 id="Here-is-the-code"><a href="#Here-is-the-code" class="headerlink" title="Here is the code"></a>Here is the code</h3><pre><code class="java">public class OrangesRotting {
+
+    public static void main(String[] args) {
+        int[][] grid = new int[1][];
+        grid[0] = new int[]{1,2};
+//        grid[1] = new int[]{1,1,0};
+//        grid[2] = new int[]{0,1,1};
+
+        orangesRotting(grid);
+    }
+
+    static class Node{
+        int row;
+        int col;
+        int count;
+        Node(int row, int col,int count){
+            this.row = row;
+            this.col = col;
+            this.count = count;
+        }
+    }
+
+    public static int orangesRotting(int[][] grid) {
+        if (grid.length == 0){
+            return -1;
+        }
+        int ans = Integer.MIN_VALUE;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        Deque&lt;Node&gt; queue = new LinkedList&lt;&gt;();
+        for (int i = 0; i &lt; grid.length; i ++){
+            for (int j = 0; j &lt; grid[i].length ; j ++){
+                if (grid[i][j] == 2){
+                    queue.add(new Node(i,j,0));
+                    visited[i][j] = true;
+                }
+            }
+        }
+
+        while (!queue.isEmpty()){
+            Node cur = queue.poll();
+            if (cur.row - 1 &gt;= 0 &amp;&amp; !visited[cur.row - 1][cur.col] &amp;&amp; grid[cur.row - 1][cur.col] == 1){
+                visited[cur.row - 1][cur.col] = true;
+                queue.add(new Node(cur.row - 1, cur.col, cur.count + 1));
+            }
+            if (cur.row + 1 &lt; visited.length &amp;&amp; !visited[cur.row + 1][cur.col] &amp;&amp; grid[cur.row + 1][cur.col] == 1){
+                visited[cur.row + 1][cur.col] = true;
+                queue.add(new Node(cur.row + 1, cur.col, cur.count + 1));
+            }
+            if (cur.col - 1 &gt;= 0 &amp;&amp; !visited[cur.row][cur.col - 1] &amp;&amp; grid[cur.row][cur.col - 1] == 1){
+                visited[cur.row][cur.col - 1] = true;
+                queue.add(new Node(cur.row, cur.col - 1, cur.count + 1));
+            }
+            if (cur.col + 1 &lt; visited[cur.row].length &amp;&amp; !visited[cur.row][cur.col + 1] &amp;&amp; grid[cur.row][cur.col + 1] == 1){
+                visited[cur.row][cur.col + 1] = true;
+                queue.add(new Node(cur.row, cur.col + 1, cur.count + 1));
+            }
+            ans = Math.max(ans , cur.count);
+        }
+        for (int i = 0; i &lt; grid.length; i ++){
+            for (int j = 0; j &lt; grid[i].length ; j ++){
+                if (grid[i][j] == 1 &amp;&amp; !visited[i][j]){
+                    return -1;
+                }
+            }
+        }
+        return ans;
+    }
+    
+}
+</code></pre>

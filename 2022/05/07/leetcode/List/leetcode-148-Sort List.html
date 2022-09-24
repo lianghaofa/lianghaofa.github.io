@@ -1,0 +1,80 @@
+<hr>
+<p>title: leetcode-148-Sort List<br>date: 2022-05-08 21:40:52<br>summary: 排序链表<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>链表</li>
+</ul>
+<hr>
+<h2 id="排序链表"><a href="#排序链表" class="headerlink" title="排序链表"></a>排序链表</h2><p><a href="https://leetcode-cn.com/problems/sort-list/">leetcode-148-Sort List</a></p>
+<blockquote>
+<p>迭代版归并排序</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public static ListNode sortList(ListNode head) {
+
+        int len = 0;
+        ListNode cur = head;
+        while (cur != null){
+            len ++;
+            cur = cur.next;
+        }
+        int l = 1;
+        ListNode pre = new ListNode(Integer.MIN_VALUE);
+        pre.next = head;
+        while (l &lt;= len){
+            ListNode p = pre;
+            ListNode s = head;
+            ListNode f = pre.next;
+            int count = 1;
+            while (count * l &lt;= len &amp;&amp; f != null){
+                s = f;
+                int ll = l;
+                while (ll &gt; 0 &amp;&amp; s != null){
+                    s = s.next;
+                    if (f != null &amp;&amp; f.next != null){
+                        f = f.next.next;
+                    }else {
+                        f = null;
+                    }
+                    ll --;
+                }
+                p = MergeSort(p,p.next, s,f);
+                count ++;
+            }
+            l *= 2;
+        }
+        return pre.next;
+    }
+
+    private static ListNode MergeSort(ListNode pre, ListNode cur, ListNode midNode, ListNode lastNode){
+
+        ListNode mid = midNode;
+        while (cur != mid &amp;&amp; midNode != lastNode){
+            if (cur.val &gt; midNode.val){
+                ListNode next = midNode.next;
+                pre.next = midNode;
+                pre = pre.next;
+                midNode = next;
+            }else {
+                ListNode next = cur.next;
+                pre.next = cur;
+                pre = pre.next;
+                cur = next;
+            }
+        }
+        while (cur != mid){
+            ListNode next = cur.next;
+            pre.next = cur;
+            pre = pre.next;
+            cur = next;
+        }
+        while (midNode != lastNode){
+            ListNode next = midNode.next;
+            pre.next = midNode;
+            pre = pre.next;
+            midNode = next;
+        }
+        pre.next = lastNode;
+        return pre;
+    }
+}
+</code></pre>

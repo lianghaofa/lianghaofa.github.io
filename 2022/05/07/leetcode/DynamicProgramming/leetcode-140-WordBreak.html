@@ -1,0 +1,38 @@
+<hr>
+<p>title: leetcode-140-WordBreak<br>date: 2022-05-07 16:40:52<br>summary: 单词拆分 II<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="单词拆分-II"><a href="#单词拆分-II" class="headerlink" title="单词拆分 II"></a>单词拆分 II</h2><p><a href="https://leetcode-cn.com/problems/word-break-ii/">leetcode-140-WordBreak</a></p>
+<h3 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h3><pre><code class="java">class Solution {
+    List&lt;String&gt; ans;
+    public List&lt;String&gt; wordBreak(String s, List&lt;String&gt; wordDict) {
+        ans = new ArrayList&lt;&gt;();
+        Set&lt;String&gt; dict = new HashSet&lt;&gt;(wordDict);
+        List&lt;String&gt; res = new ArrayList&lt;&gt;();
+        dfs(s, 0, dict,  res);
+        return ans;
+    }
+
+    private void dfs(String s, int index, Set&lt;String&gt; dict, List&lt;String&gt; res){
+        if (index == s.length()){
+            StringBuilder r = new StringBuilder();
+            for (String re : res) {
+                r.append(re).append(&quot; &quot;);
+            }
+            ans.add(r.toString().trim());
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (int i = index; i &lt; s.length(); i ++){
+            builder.append(s.charAt(i));
+            if (dict.contains(builder.toString())){
+                res.add(builder.toString());
+                dfs(s, i + 1, dict, res);
+                res.remove(res.size() - 1);
+            }
+        }
+    }
+}
+</code></pre>

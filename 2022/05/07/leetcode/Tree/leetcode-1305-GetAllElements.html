@@ -1,0 +1,57 @@
+<hr>
+<p>title: leetcode-1305-GetAllElements<br>date: 2022-05-01 01:40:52<br>summary: 两棵二叉搜索树中的所有元素<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Morris</li>
+</ul>
+<hr>
+<h2 id="两棵二叉搜索树中的所有元素"><a href="#两棵二叉搜索树中的所有元素" class="headerlink" title="两棵二叉搜索树中的所有元素"></a>两棵二叉搜索树中的所有元素</h2><blockquote>
+<p>1.Morris中序常规套路。<br>2.比较大小。<br>时间 ：O(n + m) 空间 O （1）<br><a href="https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/">leetcode-1305-GetAllElements</a></p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public List&lt;Integer&gt; getAllElements(TreeNode root1, TreeNode root2) {
+        
+        List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+        TreeNode cur1 = Morris(root1);
+        TreeNode cur2 = Morris(root2);
+        while (cur1 != null || cur2 != null){
+            if (cur1 != null &amp;&amp; cur2 != null){
+                if (cur1.val &gt; cur2.val){
+                    list.add(cur2.val);
+                    cur2 = Morris(cur2.right);
+                }else {
+                    list.add(cur1.val);
+                    cur1 = Morris(cur1.right);
+                }
+            }else if (cur2 != null){
+                list.add(cur2.val);
+                cur2 = Morris(cur2.right);
+            }else {
+                list.add(cur1.val);
+                cur1 = Morris(cur1.right);
+            }
+        }
+        return list;
+    }
+
+    private TreeNode Morris(TreeNode cur){
+        TreeNode mostRight;
+        while (cur != null){
+            mostRight = cur.left;
+            if (mostRight != null){
+                while (mostRight.right != null &amp;&amp; mostRight.right != cur){
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == cur){
+                    mostRight.right = null;
+                }else {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                    continue;
+                }
+            }
+            break;
+        }
+        return cur;
+    }
+}
+</code></pre>

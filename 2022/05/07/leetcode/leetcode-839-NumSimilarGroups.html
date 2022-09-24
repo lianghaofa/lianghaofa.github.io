@@ -1,0 +1,63 @@
+<hr>
+<p>title: leetcode-839-NumSimilarGroups<br>date: 2022-04-25 16:40:52<br>summary: 相似字符串组<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>并查集</li>
+</ul>
+<hr>
+<h2 id="相似字符串组"><a href="#相似字符串组" class="headerlink" title="相似字符串组"></a>相似字符串组</h2><p><a href="https://leetcode-cn.com/problems/similar-string-groups/">leetcode-839-NumSimilarGroups</a></p>
+<blockquote>
+<p>暴力求解是否存在相似<br>并查集分组</p>
+</blockquote>
+<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><pre><code class="java">public class NumSimilarGroups {
+
+    public static void main(String[] args) {
+        numSimilarGroups(new String[]{&quot;kccomwcgcs&quot;,&quot;socgcmcwkc&quot;,&quot;sgckwcmcoc&quot;,&quot;coswcmcgkc&quot;,&quot;cowkccmsgc&quot;,&quot;cosgmccwkc&quot;,&quot;sgmkwcccoc&quot;,&quot;coswmccgkc&quot;,&quot;kowcccmsgc&quot;,&quot;kgcomwcccs&quot;});
+    }
+
+    public static int numSimilarGroups(String[] strs) {
+        int[] nums = new int[strs.length];
+        for (int i = 0; i &lt; nums.length; i ++){
+            nums[i] = i;
+        }
+        for (int i = 0; i &lt; strs.length; i ++){
+            int iP = findParent(nums, i);
+            for (int j = i + 1; j &lt; strs.length; j ++){
+                if (check(strs[i], strs[j], strs[i].length())){
+                    int jP = findParent(nums, j);
+                    nums[jP] = iP;
+                }
+            }
+        }
+        int count = 0;
+        for (int i = 0; i &lt; nums.length; i ++){
+            findParent(nums, i);
+            if (nums[i] == i){
+                count ++;
+            }
+        }
+        return count;
+    }
+
+    public static boolean check(String a, String b, int len) {
+        int num = 0;
+        for (int i = 0; i &lt; len; i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                num++;
+                if (num &gt; 2) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static int findParent(int[] nums, int cur){
+        if (nums[cur] == cur){
+            return cur;
+        }
+        nums[cur] = findParent(nums, nums[cur]);
+        return nums[cur];
+    }
+
+}
+</code></pre>

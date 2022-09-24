@@ -1,0 +1,1525 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="MySQL 索引, Hexo">
+    <meta name="description" content="MySQL 索引优化">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    
+
+    <title>MySQL 索引 | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+<!--                <a href="/" class="waves-effect waves-light">-->
+<!--                    -->
+<!--                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">-->
+<!--                    -->
+<!--                    <span class="logo-span">Hexo</span>-->
+<!--                </a>-->
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>Contact</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			Contact
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/lianghaofa" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/lianghaofa" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">MySQL 索引</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/MySQL/">
+                                <span class="chip bg-color">MySQL</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="post-category">
+                                数据库
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2022-05-09
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2022-06-29
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    2.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    11 Min
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="MySQL-索引优化"><a href="#MySQL-索引优化" class="headerlink" title="MySQL 索引优化"></a>MySQL 索引优化</h2><h3 id="Memory-引擎-Hash"><a href="#Memory-引擎-Hash" class="headerlink" title="Memory 引擎 Hash"></a>Memory 引擎 Hash</h3><h3 id="Innodb-引擎-B-tree"><a href="#Innodb-引擎-B-tree" class="headerlink" title="Innodb 引擎 B+ tree"></a>Innodb 引擎 B+ tree</h3><p>数据与索引位于同一的文件</p>
+<p>默认一次读取 16kb</p>
+<p>B tree<br>所有节点存储索引与数据</p>
+<p>B+ tree</p>
+<p>非叶子节点不存储数据</p>
+<p>非叶子节点只存储存储索引</p>
+<p>B* tree</p>
+<p>如果没有主键，会自动生成64位的rowId.</p>
+<h3 id="MySam-引擎-B-tree"><a href="#MySam-引擎-B-tree" class="headerlink" title="MySam 引擎 B+ tree"></a>MySam 引擎 B+ tree</h3><p>数据与索引位于不同的文件</p>
+<p>遍历完索引后，获得指针</p>
+<h3 id="聚簇索引-Innodb"><a href="#聚簇索引-Innodb" class="headerlink" title="聚簇索引 Innodb"></a>聚簇索引 Innodb</h3><p>不是单独的索引类型，而是一种数据存储方式，指的是数据行跟相邻的键值紧凑的存储在一起。</p>
+<p>优点：数据访问快</p>
+<p>缺点： B + 树分裂合并次数更多，IO次数更多。</p>
+<p>伟华索引成本更高</p>
+<h3 id="非聚簇索引-MySam"><a href="#非聚簇索引-MySam" class="headerlink" title="非聚簇索引  MySam"></a>非聚簇索引  MySam</h3><p>数据文件跟索引文件分开存放。</p>
+<p>查询索引文件得到指针，使用指针寻找数据。</p>
+<h3 id="MySQL-如何处理多级索引"><a href="#MySQL-如何处理多级索引" class="headerlink" title="MySQL 如何处理多级索引"></a>MySQL 如何处理多级索引</h3><p>多个索引，只有主键索引才跟数据放在一起。</p>
+<h4 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h4><p>不可以有null值</p>
+<h4 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h4><p>可以有null值，null值比较较慢</p>
+<h4 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h4><p>普通索引可以重复</p>
+<h4 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h4><h4 id="组合索引"><a href="#组合索引" class="headerlink" title="组合索引"></a>组合索引</h4><h4 id="索引合并"><a href="#索引合并" class="headerlink" title="索引合并"></a>索引合并</h4><h4 id="面试技术名词"><a href="#面试技术名词" class="headerlink" title="面试技术名词"></a>面试技术名词</h4><h5 id="回表"><a href="#回表" class="headerlink" title="回表"></a>回表</h5><p>普通索引才存在回表</p>
+<p>主键、name,先查name B+ 树，获取主键再查询主键的B +树 获取记录。</p>
+<h5 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h5><p>如果没有主键，MySQL会自动生成64位的rowId.</p>
+<p>emp 表 索引 name, id 主键，默认建索引</p>
+<p>select * from emp where id &#x3D; 1</p>
+<p>主键、name,先查name B+ 树，获取主键再查询主键的B +树 获取记录。</p>
+<p>select id from emp where id &#x3D; 1</p>
+<p>直接查询主键的B+ 树 获取记录 。</p>
+<p><strong>没有回表过程，就叫覆盖索引</strong></p>
+<p>如果只需要查询索引列</p>
+<p>MySAM 在内存中只缓存索引，数据则依赖与操作系统，可能需要IO操作。</p>
+<p>InnoDB 使用聚簇，覆盖索引特别有效。</p>
+<h5 id="最左匹配-适用于组合索引"><a href="#最左匹配-适用于组合索引" class="headerlink" title="最左匹配  适用于组合索引"></a>最左匹配  适用于组合索引</h5><p>select * from emp where name &#x3D; ? and age &#x3D; ?</p>
+<p>先查name B+ 树，获取主键再查询主键的B +树 获取记录。</p>
+<p>select * from emp where age &#x3D; ? </p>
+<p>索引失效</p>
+<p>select * from emp where name &#x3D; ?</p>
+<p>联合索引.</p>
+<p>索引是排好序的数据结构 ？</p>
+<p>索引是需要持久化的。尽量选短的的进行持久化。</p>
+<p>where 语句，顺序会被优化调整。</p>
+<h5 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h5><p>select t1.name,t2.name from t1 jion t2 t1.id &#x3D; t2.id</p>
+<p>谓词下推</p>
+<p>方式1：</p>
+<p>t1 10个列， t2 10个列 -&gt; 20列，然后把 t1.name t2.name 取出来</p>
+<p>方式2：</p>
+<p>t1.id t1.name t2.id t2.name -&gt; 4列， 然后把 t1.name t2.name 取出来</p>
+<p>组合索引  name, age</p>
+<p>select * from emp where name &#x3D; ? and age &#x3D; ?</p>
+<p>旧版本:</p>
+<p>select * from emp where name &#x3D; ?  全部取出来</p>
+<p>对数据进行过滤 age &#x3D; ? </p>
+<p>新版本： 索引下推</p>
+<p>name，age 同时进行判断。</p>
+<h3 id="索引匹配方式"><a href="#索引匹配方式" class="headerlink" title="索引匹配方式"></a>索引匹配方式</h3><h4 id="全值匹配"><a href="#全值匹配" class="headerlink" title="全值匹配"></a>全值匹配</h4><p>索引中的所有列都匹配<br>primary key : id</p>
+<p>index : name,age,pos</p>
+<p>因此索引为：id,name,age,pos</p>
+<p>select * from staffs where name &#x3D; ‘July’ and age &#x3D; ‘23’ and pos &#x3D;’dev’;</p>
+<p>查询索引为：name,age,pos</p>
+<h4 id="匹配最左前缀"><a href="#匹配最左前缀" class="headerlink" title="匹配最左前缀"></a>匹配最左前缀</h4><p>select * from staffs where name &#x3D; ‘July’ and age &#x3D; ‘23’;</p>
+<p>查询索引为：name,age</p>
+<p>select * from staffs where name &#x3D; ‘July’;<br>查询索引为：name</p>
+<h4 id="匹配列前缀"><a href="#匹配列前缀" class="headerlink" title="匹配列前缀"></a>匹配列前缀</h4><p>select * from staffs where name like ‘%J’;<br>索引仍生效</p>
+<p>select * from staffs where name like ‘%J%’; </p>
+<p>索引失效,%不要在前</p>
+<h4 id="匹配范围"><a href="#匹配范围" class="headerlink" title="匹配范围"></a>匹配范围</h4><p>select * from staffs where name &gt; ‘Jason’;<br>索引仍生效</p>
+<h4 id="匹配某一列的全部与某一列的一部分"><a href="#匹配某一列的全部与某一列的一部分" class="headerlink" title="匹配某一列的全部与某一列的一部分"></a>匹配某一列的全部与某一列的一部分</h4><p>select * from staffs where name &#x3D; ‘Jason’ and age &gt; 25;<br>查询索引为：name,age</p>
+<p>select * from staffs where name &#x3D; ‘Jason’ and pos &gt; 25;</p>
+<p>仅name 生效</p>
+<p>select * from staffs where name &#x3D; ‘Jason’ and pos &#x3D; 25 and age &#x3D; 25;</p>
+<p>仅name, age 生效，  pos &#x3D; 25 不符合索引条件</p>
+<p>select * from staffs where name &#x3D; ‘Jason’ and pos &#x3D; ‘dev’ and age &#x3D; 25;</p>
+<p>name, age,pos 生效。where 语句会进行优化</p>
+<h4 id="只访问索引的查询"><a href="#只访问索引的查询" class="headerlink" title="只访问索引的查询"></a>只访问索引的查询</h4><p>select name,age,pos from staffs where name &#x3D; ‘July’ and age &#x3D; ‘23’ and pos &#x3D;’dev’;<br>直接获取数据</p>
+<p>select * from staffs where name &#x3D; ‘July’ and age &#x3D; ‘23’ and pos &#x3D;’dev’;</p>
+<p>访问完索引，还需要获取其他列的值</p>
+<h3 id="优化细节"><a href="#优化细节" class="headerlink" title="优化细节"></a>优化细节</h3><h4 id="使用索引进行查询的时候尽量不要使用表达式，把计算放到业务层。"><a href="#使用索引进行查询的时候尽量不要使用表达式，把计算放到业务层。" class="headerlink" title="使用索引进行查询的时候尽量不要使用表达式，把计算放到业务层。"></a>使用索引进行查询的时候尽量不要使用表达式，把计算放到业务层。</h4><p>where id + 1 &#x3D; 5; where id &#x3D; 4</p>
+<h4 id="尽量使用主键查询，而不是其他索引。"><a href="#尽量使用主键查询，而不是其他索引。" class="headerlink" title="尽量使用主键查询，而不是其他索引。"></a>尽量使用主键查询，而不是其他索引。</h4><p>避免触发回表查询</p>
+<h4 id="使用前缀索引，IO读取前缀进内存进行过滤，前提是前缀能过滤大量数据，否则效果不明显。"><a href="#使用前缀索引，IO读取前缀进内存进行过滤，前提是前缀能过滤大量数据，否则效果不明显。" class="headerlink" title="使用前缀索引，IO读取前缀进内存进行过滤，前提是前缀能过滤大量数据，否则效果不明显。"></a>使用前缀索引，IO读取前缀进内存进行过滤，前提是前缀能过滤大量数据，否则效果不明显。</h4><p>减少IO次数</p>
+<h4 id="使用索引扫描排序-order"><a href="#使用索引扫描排序-order" class="headerlink" title="使用索引扫描排序 order"></a>使用索引扫描排序 order</h4><p>order by 排序，是在内存排序。索引是有序的， order by 索引</p>
+<h4 id="union-all-in-or-尽量使用in"><a href="#union-all-in-or-尽量使用in" class="headerlink" title="union all,in,or 尽量使用in"></a>union all,in,or 尽量使用in</h4><p>union 本身包含了distinct ，去重<br>union all<br>select * from staffs where id &#x3D; 1  union all where id &#x3D; 2; 分开了sql语句执行</p>
+<p>select * from staffs where id in(1,2); oracle 限制了 1000</p>
+<p>select * from staffs where id &#x3D; 1  or id &#x3D; 2;  在前面语句的基础上过滤</p>
+<h4 id="范围列可以用索引"><a href="#范围列可以用索引" class="headerlink" title="范围列可以用索引"></a>范围列可以用索引</h4><h4 id="强制类型转换会全文扫描"><a href="#强制类型转换会全文扫描" class="headerlink" title="强制类型转换会全文扫描"></a>强制类型转换会全文扫描</h4><p>前提 ： phone 列对应的类型为 varchar</p>
+<p>select * from staffs where phone &#x3D; 1234567   不会触发索引。</p>
+<p>select * from staffs where phone &#x3D; ‘1234567’   触发索引</p>
+<h4 id="更新频繁，数据区分度不高的字段不宜直接建索引"><a href="#更新频繁，数据区分度不高的字段不宜直接建索引" class="headerlink" title="更新频繁，数据区分度不高的字段不宜直接建索引"></a>更新频繁，数据区分度不高的字段不宜直接建索引</h4><p>维护索引成本高</p>
+<p>dict 高于 80%</p>
+<h4 id="创建索引的列，不要为null，-null的处理逻辑比较复杂"><a href="#创建索引的列，不要为null，-null的处理逻辑比较复杂" class="headerlink" title="创建索引的列，不要为null， null的处理逻辑比较复杂"></a>创建索引的列，不要为null， null的处理逻辑比较复杂</h4><h4 id="当进行表连接的时候，最好不要超过3张表，需要join的字段，数据类型必须一致"><a href="#当进行表连接的时候，最好不要超过3张表，需要join的字段，数据类型必须一致" class="headerlink" title="当进行表连接的时候，最好不要超过3张表，需要join的字段，数据类型必须一致"></a>当进行表连接的时候，最好不要超过3张表，需要join的字段，数据类型必须一致</h4><p>MySQL join内部实现机制 ： 笛卡尔积  </p>
+<h5 id="Simple-Nested-Loop"><a href="#Simple-Nested-Loop" class="headerlink" title="Simple Nested Loop"></a>Simple Nested Loop</h5><p>a0   b0<br>a1   b1<br>a2   b2<br>a0 b0,a0 b1,a0 b2<br>a1 b0,a1 b1,a1 b2<br>a2 b0,a2 b1,a2 b2</p>
+<h5 id="Index-Nested-Loop"><a href="#Index-Nested-Loop" class="headerlink" title="Index Nested Loop"></a>Index Nested Loop</h5><p>b 表设置索引<br>a0   b0<br>a1   b1<br>a2   b2</p>
+<p>a0 b1,a1 b1,a2 b1</p>
+<p>先在索引查找，然后再回表查询记录。</p>
+<p>A join B ，MySQL 读取的顺序不一定， conast jion 可指定读取顺序。</p>
+<p>小表 join 大表</p>
+<h5 id="Block-Nested-Loop-Join"><a href="#Block-Nested-Loop-Join" class="headerlink" title="Block Nested-Loop Join"></a>Block Nested-Loop Join</h5><p>如果有索引，会采取Index Nested Loop。如果没有，会采用Block Nested-Loop Join，把驱动表中所有与join相关的列先读取到内存。</p>
+<p>然后与磁盘中的另外一张表进行比较，成功直接返回缓存中的数据。</p>
+<p>join_buffer_size 默认256KB</p>
+<p>select * from t1 join t2 on t1.id &#x3D; t2.id and t1.name &#x3D; ‘张三’;</p>
+<p>select * from t1 join t2 t1.id &#x3D; t2.id where t1.name &#x3D; ‘张三’;</p>
+<p>结论：<br>inner join  当使用内连接时，两种方式一样</p>
+<p>left join 当使用左外连接时，会把左表的数据全部查出。通过右表进行过滤<br>right join 当使用右外连接时，会把右表的数据全部查出。通过左表进行过滤</p>
+<h4 id="limit-限制输出"><a href="#limit-限制输出" class="headerlink" title="limit 限制输出"></a>limit 限制输出</h4><p>没有limit，指针继续往下寻找。</p>
+<h4 id="单表索引控制在5个字段之内"><a href="#单表索引控制在5个字段之内" class="headerlink" title="单表索引控制在5个字段之内"></a>单表索引控制在5个字段之内</h4><p>索引字段越多，读取的数据量越多，可能导致IO次数增加。</p>
+<h4 id="组合索引在5个字段之内"><a href="#组合索引在5个字段之内" class="headerlink" title="组合索引在5个字段之内"></a>组合索引在5个字段之内</h4><h4 id="SQL优化要根据数据情况"><a href="#SQL优化要根据数据情况" class="headerlink" title="SQL优化要根据数据情况"></a>SQL优化要根据数据情况</h4><h3 id="索引监控"><a href="#索引监控" class="headerlink" title="索引监控"></a>索引监控</h3><p>show status like ‘Handler_read%’;</p>
+<p>Handler_read_first: 通过index获取数据的次数<br>Handler_read_key: 获取索引第一个条目的次数<br>Handler_read_last: 读取索引最后一个条目的次数<br>Handler_read_next: 通过索引读取下一条数据的次数<br>Handler_read_prev: 通过索引读取上一条数据的次数<br>Handler_read_rnd: 从固定位置读取数据的次数<br>Handler_read_rnd_next: 从数据节点读取下一条数据的次数</p>
+<p>B+树 可以限制高度?</p>
+<p>Innodb_page_size 16384 字节  16KB</p>
+<p>bigint 8B , 磁盘索引 6B</p>
+<p>16KB &#x2F; (8B + 6B) &#x3D; 1170.285…</p>
+<p>提前把非叶子节点(索引) 加载到内存，最多只需要一次磁盘IO即可获取数据。</p>
+<p>MYSAM</p>
+<p>.frm - 表结构</p>
+<p>.MYD - data</p>
+<p>.MYI - index</p>
+<p>InnoDB</p>
+<p>-<br>.frm - 表结构</p>
+<p>.idb - data 和 index</p>
+<p>MYSAM - InnoDB B+树的不同在数据与索引是否分离</p>
+<p>MYSAM - 叶子不存放数据</p>
+<p>InnoDB - 叶子存放数据</p>
+<p>聚集 与 非聚集 ？ 数据与索引是否一起存放</p>
+<p>InnoDB B+树 的具体实现。。。说法不一致</p>
+<p>B+树 - 叶子是所有节点</p>
+<p><img src="/medias/MySQL/1656044298714.png" alt="B+树 叶子"></p>
+<p>MYSQL 叶子双向指针</p>
+<p><img src="/medias/MySQL/1656044298714.png" alt="B 树 叶子"></p>
+<p>B 树 叶子没有指针</p>
+<p>B 树 叶子没有冗余</p>
+<p><img src="/medias/MySQL/1656041969805.png" alt="普通索引"></p>
+<p>InnoDB 没有主键，会在列种找一个唯一性的列作为索引，如果所有的列都没有唯一性，会维护一个主键。</p>
+<h3 id="Buffer-Pool-128M"><a href="#Buffer-Pool-128M" class="headerlink" title="Buffer Pool (128M)"></a>Buffer Pool (128M)</h3><p>淘汰策略  LRU</p>
+<p>空闲链表 free - 基节点(多少个空闲节点，头节点指针，尾节点指针) - 节点(指向空闲页的位置)  </p>
+<p>持久化链表 flush -  修改后直接持久化，性能较差。放到 flush 链表</p>
+<ul>
+<li>基节点(多少个持久化节点，头节点指针，尾节点指针) - 节点(指向持久化页的位置)</li>
+</ul>
+<p>数据链表 LRU </p>
+<p>select * from table1, 当查询的数据量非常大，此时可能造成lru链表都被替换了。导致热数据也没了，影响性能。</p>
+<p>分冷热数据，热数据不轻易替换。 5&#x2F;8 热数据 , 3&#x2F;8 冷数据。</p>
+<p>冷数据 - 新数据块在冷数据间替换。</p>
+<p>热数据 - 超过时间段的查询某个块的次数，以块为单位替换。  select * from table1 等操作会导致短时间内对某个块进行多次操作。</p>
+<p>磁盘写数据，写一块？</p>
+<p>update</p>
+<p>1.修改Buffer Pool 相关的页数据</p>
+<p>2.生成 bin.log</p>
+<p>3.生成 redo.log</p>
+<p>4.生成 undo.log</p>
+<p>5.持久化 redo.log</p>
+<p>6.后台定时任务负责持久化</p>
+<p>update 语句执行完，不一定直接持久化，如果有事务，等事务提交完成。</p>
+<p>事务的操作</p>
+<p>1.操作位于内存的 Log Buffer</p>
+<p>2.事务提交后才写入磁盘中的 redo.log </p>
+<p>MYSQL安装后占用两个  48M  的磁盘空间 用于  redo.log  ?。</p>
+<p>参数可以调。innodb_log_file_size 为了达到顺序写磁盘的目的。</p>
+<p>写入 redo.log ，并不代表真正完成持久化。仍需要写到数据真正所在的磁盘位置上。</p>
+<ul>
+<li><p>0  事务提交时，不立即对 redo.log 进行持久化，交由后台线程操作。存在数据丢失的风险。</p>
+</li>
+<li><p>1  事务提交时，立即对 redo.log 进行持久化。</p>
+</li>
+<li><p>2  事务提交时，写入操作系统的缓冲区，并没有持久化。只要操作系统没挂，操作系统后台线程就会定时持久化，存在数据丢失的风险。</p>
+</li>
+</ul>
+<p><img src="/medias/MySQL/innodb-architecture.png" alt="Innodb-Architecture"></p>
+<p>Innodb -  redo.log</p>
+<p>bin.log 属于数据库级别，不属于存储引擎级别。</p>
+<p>bin.log - 主从同步</p>
+<p>从库负责读，没有事务，此时可以把存储引擎设置为 MySAM</p>
+<p>bin.log - 存储 sql</p>
+<p>redo.log - 硬盘哪一页，哪一条数据。</p>
+<p>redo.log 恢复数据比直接存储 sql 更快。</p>
+<p>MVVC</p>
+<p>DoubleWrite Buffer Files</p>
+<p>InnoDB一个页 16KB, 操作系统一个页 4KB， 操作系统写一个InnoDB页需要4次，如果写了2次，操作系统挂了。该怎么办？</p>
+<p>先写 双写缓存区。</p>
+<p>InnoDB 的事务处理</p>
+<p>MySQL 重启后需要恢复 redo.log ？</p>
+<p>undo.log - 回滚数据。</p>
+<p>a &#x3D; 10</p>
+<p>begin;<br>update a &#x3D; 11;<br>end;</p>
+<p>undo.log a &#x3D; 10;</p>
+<p>Change Buffer </p>
+<p>修改数据，可能会触发修改索引。不仅仅是数据</p>
+<p>存放 uodate 语句，可能对索引进行了修改。等到需要查询索引时，再利用 Change Buffer 的数据同时更新记录。 懒更新</p>
+<table>
+<thead>
+<tr>
+<th align="center">隔离级别</th>
+<th align="center">脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">READ_UNCOMMITTED</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+</tr>
+<tr>
+<td align="center">READ_COMMITTED</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+<td align="center">Y</td>
+</tr>
+<tr>
+<td align="center">REPEATED_READ</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">Y</td>
+</tr>
+<tr>
+<td align="center">SERIALIZABLE</td>
+<td align="center">N</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+</tbody></table>
+<p>Y 会出现相关问题， X 不会出现相关问题</p>
+<p>SERIALIZABLE - 串行化</p>
+<p>REPEATED_READ - 默认的隔离级别</p>
+<p>REPEATED_READ - 会生成快照 ？</p>
+<p>SERIALIZABLE - 会阻塞， 不管读还是写，如果有操作正在执行，都会阻塞。</p>
+<p>READ_COMMITTED - 是否会阻塞 ？ </p>
+<h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Darren Leung</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://localhost:4001/2022/05/09/database/mysql/index-opt/">http://localhost:4001/2022/05/09/database/mysql/index-opt/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint policy. If reproduced, please indicate source
+                    <a href="/about" target="_blank">Darren Leung</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/MySQL/">
+                                    <span class="chip bg-color">MySQL</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: null,
+        id: '2022-05-09T07-08-52',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2022/05/09/leetcode/tree/leetcode-790-domino-and-tromino-tiling/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="leetcode-790-Domino and Tromino Tiling">
+                        
+                        <span class="card-title">leetcode-790-Domino and Tromino Tiling</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            多米诺和托米诺平铺
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-05-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/leetcode/" class="post-category">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/DP/">
+                        <span class="chip bg-color">DP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/05/08/leetcode/list/leetcode-148-sort-list/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="leetcode-148-Sort List">
+                        
+                        <span class="card-title">leetcode-148-Sort List</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            排序链表
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-05-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/leetcode/" class="post-category">
+                                    leetcode
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%93%BE%E8%A1%A8/">
+                        <span class="chip bg-color">链表</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="470601889"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='one'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">Darren Leung</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">75.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;Total visits:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;Total visitors:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/lianghaofa" class="tooltipped" target="_blank" data-tooltip="GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1016907063@qq.com" class="tooltipped" target="_blank" data-tooltip="email" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1016907063" class="tooltipped" target="_blank" data-tooltip="QQ: 1016907063" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

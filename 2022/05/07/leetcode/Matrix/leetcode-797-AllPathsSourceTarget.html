@@ -1,0 +1,34 @@
+<hr>
+<p>title: leetcode-797-AllPathsSourceTarget<br>date: 2022-05-08 11:40:52<br>summary: 所有可能的路径<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DFS</li>
+</ul>
+<hr>
+<h2 id="所有可能的路径"><a href="#所有可能的路径" class="headerlink" title="所有可能的路径"></a>所有可能的路径</h2><p><a href="https://leetcode-cn.com/problems/all-paths-from-source-to-target/">leetcode-797-AllPathsSourceTarget</a></p>
+<blockquote>
+<p>有向无环图（DAG）</p>
+</blockquote>
+<pre><code class="java">
+class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; allPathsSourceTarget(int[][] graph) {
+
+        List&lt;List&lt;Integer&gt;&gt; lists = new ArrayList&lt;&gt;();
+        List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+        list.add(0);
+        dfs(graph, lists,list, 0);
+        return lists;
+    }
+
+    private void dfs(int[][] graph,List&lt;List&lt;Integer&gt;&gt; lists,List&lt;Integer&gt; list,int row){
+        if (graph.length - 1 == row){
+            lists.add(new ArrayList&lt;&gt;(list));
+            return;
+        }
+        for (int i = 0;i &lt; graph[row].length;i ++) {
+            list.add(graph[row][i]);
+            dfs(graph, lists, list, graph[row][i]);
+            list.remove(list.size() - 1);
+        }
+    }
+}
+</code></pre>

@@ -1,0 +1,130 @@
+<hr>
+<p>title: leetcode-126-Word Ladder II<br>date: 2022-05-28 20:20:52<br>summary: 单词接龙 II<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="单词接龙-II"><a href="#单词接龙-II" class="headerlink" title="单词接龙 II"></a>单词接龙 II</h2><p><a href="https://leetcode.cn/problems/word-ladder-ii/">leetcode-126-Word Ladder II</a></p>
+<pre><code class="java">public class FindLadders {
+    
+    public static void main(String[] args) {
+        //String[] strs = new String[]{&quot;kid&quot;,&quot;tag&quot;,&quot;pup&quot;,&quot;ail&quot;,&quot;tun&quot;,&quot;woo&quot;,&quot;erg&quot;,&quot;luz&quot;,&quot;brr&quot;,&quot;gay&quot;,&quot;sip&quot;,&quot;kay&quot;,&quot;per&quot;,&quot;val&quot;,&quot;mes&quot;,&quot;ohs&quot;,&quot;now&quot;,&quot;boa&quot;,&quot;cet&quot;,&quot;pal&quot;,&quot;bar&quot;,&quot;die&quot;,&quot;war&quot;,&quot;hay&quot;,&quot;eco&quot;,&quot;pub&quot;,&quot;lob&quot;,&quot;rue&quot;,&quot;fry&quot;,&quot;lit&quot;,&quot;rex&quot;,&quot;jan&quot;,&quot;cot&quot;,&quot;bid&quot;,&quot;ali&quot;,&quot;pay&quot;,&quot;col&quot;,&quot;gum&quot;,&quot;ger&quot;,&quot;row&quot;,&quot;won&quot;,&quot;dan&quot;,&quot;rum&quot;,&quot;fad&quot;,&quot;tut&quot;,&quot;sag&quot;,&quot;yip&quot;,&quot;sui&quot;,&quot;ark&quot;,&quot;has&quot;,&quot;zip&quot;,&quot;fez&quot;,&quot;own&quot;,&quot;ump&quot;,&quot;dis&quot;,&quot;ads&quot;,&quot;max&quot;,&quot;jaw&quot;,&quot;out&quot;,&quot;btu&quot;,&quot;ana&quot;,&quot;gap&quot;,&quot;cry&quot;,&quot;led&quot;,&quot;abe&quot;,&quot;box&quot;,&quot;ore&quot;,&quot;pig&quot;,&quot;fie&quot;,&quot;toy&quot;,&quot;fat&quot;,&quot;cal&quot;,&quot;lie&quot;,&quot;noh&quot;,&quot;sew&quot;,&quot;ono&quot;,&quot;tam&quot;,&quot;flu&quot;,&quot;mgm&quot;,&quot;ply&quot;,&quot;awe&quot;,&quot;pry&quot;,&quot;tit&quot;,&quot;tie&quot;,&quot;yet&quot;,&quot;too&quot;,&quot;tax&quot;,&quot;jim&quot;,&quot;san&quot;,&quot;pan&quot;,&quot;map&quot;,&quot;ski&quot;,&quot;ova&quot;,&quot;wed&quot;,&quot;non&quot;,&quot;wac&quot;,&quot;nut&quot;,&quot;why&quot;,&quot;bye&quot;,&quot;lye&quot;,&quot;oct&quot;,&quot;old&quot;,&quot;fin&quot;,&quot;feb&quot;,&quot;chi&quot;,&quot;sap&quot;,&quot;owl&quot;,&quot;log&quot;,&quot;tod&quot;,&quot;dot&quot;,&quot;bow&quot;,&quot;fob&quot;,&quot;for&quot;,&quot;joe&quot;,&quot;ivy&quot;,&quot;fan&quot;,&quot;age&quot;,&quot;fax&quot;,&quot;hip&quot;,&quot;jib&quot;,&quot;mel&quot;,&quot;hus&quot;,&quot;sob&quot;,&quot;ifs&quot;,&quot;tab&quot;,&quot;ara&quot;,&quot;dab&quot;,&quot;jag&quot;,&quot;jar&quot;,&quot;arm&quot;,&quot;lot&quot;,&quot;tom&quot;,&quot;sax&quot;,&quot;tex&quot;,&quot;yum&quot;,&quot;pei&quot;,&quot;wen&quot;,&quot;wry&quot;,&quot;ire&quot;,&quot;irk&quot;,&quot;far&quot;,&quot;mew&quot;,&quot;wit&quot;,&quot;doe&quot;,&quot;gas&quot;,&quot;rte&quot;,&quot;ian&quot;,&quot;pot&quot;,&quot;ask&quot;,&quot;wag&quot;,&quot;hag&quot;,&quot;amy&quot;,&quot;nag&quot;,&quot;ron&quot;,&quot;soy&quot;,&quot;gin&quot;,&quot;don&quot;,&quot;tug&quot;,&quot;fay&quot;,&quot;vic&quot;,&quot;boo&quot;,&quot;nam&quot;,&quot;ave&quot;,&quot;buy&quot;,&quot;sop&quot;,&quot;but&quot;,&quot;orb&quot;,&quot;fen&quot;,&quot;paw&quot;,&quot;his&quot;,&quot;sub&quot;,&quot;bob&quot;,&quot;yea&quot;,&quot;oft&quot;,&quot;inn&quot;,&quot;rod&quot;,&quot;yam&quot;,&quot;pew&quot;,&quot;web&quot;,&quot;hod&quot;,&quot;hun&quot;,&quot;gyp&quot;,&quot;wei&quot;,&quot;wis&quot;,&quot;rob&quot;,&quot;gad&quot;,&quot;pie&quot;,&quot;mon&quot;,&quot;dog&quot;,&quot;bib&quot;,&quot;rub&quot;,&quot;ere&quot;,&quot;dig&quot;,&quot;era&quot;,&quot;cat&quot;,&quot;fox&quot;,&quot;bee&quot;,&quot;mod&quot;,&quot;day&quot;,&quot;apr&quot;,&quot;vie&quot;,&quot;nev&quot;,&quot;jam&quot;,&quot;pam&quot;,&quot;new&quot;,&quot;aye&quot;,&quot;ani&quot;,&quot;and&quot;,&quot;ibm&quot;,&quot;yap&quot;,&quot;can&quot;,&quot;pyx&quot;,&quot;tar&quot;,&quot;kin&quot;,&quot;fog&quot;,&quot;hum&quot;,&quot;pip&quot;,&quot;cup&quot;,&quot;dye&quot;,&quot;lyx&quot;,&quot;jog&quot;,&quot;nun&quot;,&quot;par&quot;,&quot;wan&quot;,&quot;fey&quot;,&quot;bus&quot;,&quot;oak&quot;,&quot;bad&quot;,&quot;ats&quot;,&quot;set&quot;,&quot;qom&quot;,&quot;vat&quot;,&quot;eat&quot;,&quot;pus&quot;,&quot;rev&quot;,&quot;axe&quot;,&quot;ion&quot;,&quot;six&quot;,&quot;ila&quot;,&quot;lao&quot;,&quot;mom&quot;,&quot;mas&quot;,&quot;pro&quot;,&quot;few&quot;,&quot;opt&quot;,&quot;poe&quot;,&quot;art&quot;,&quot;ash&quot;,&quot;oar&quot;,&quot;cap&quot;,&quot;lop&quot;,&quot;may&quot;,&quot;shy&quot;,&quot;rid&quot;,&quot;bat&quot;,&quot;sum&quot;,&quot;rim&quot;,&quot;fee&quot;,&quot;bmw&quot;,&quot;sky&quot;,&quot;maj&quot;,&quot;hue&quot;,&quot;thy&quot;,&quot;ava&quot;,&quot;rap&quot;,&quot;den&quot;,&quot;fla&quot;,&quot;auk&quot;,&quot;cox&quot;,&quot;ibo&quot;,&quot;hey&quot;,&quot;saw&quot;,&quot;vim&quot;,&quot;sec&quot;,&quot;ltd&quot;,&quot;you&quot;,&quot;its&quot;,&quot;tat&quot;,&quot;dew&quot;,&quot;eva&quot;,&quot;tog&quot;,&quot;ram&quot;,&quot;let&quot;,&quot;see&quot;,&quot;zit&quot;,&quot;maw&quot;,&quot;nix&quot;,&quot;ate&quot;,&quot;gig&quot;,&quot;rep&quot;,&quot;owe&quot;,&quot;ind&quot;,&quot;hog&quot;,&quot;eve&quot;,&quot;sam&quot;,&quot;zoo&quot;,&quot;any&quot;,&quot;dow&quot;,&quot;cod&quot;,&quot;bed&quot;,&quot;vet&quot;,&quot;ham&quot;,&quot;sis&quot;,&quot;hex&quot;,&quot;via&quot;,&quot;fir&quot;,&quot;nod&quot;,&quot;mao&quot;,&quot;aug&quot;,&quot;mum&quot;,&quot;hoe&quot;,&quot;bah&quot;,&quot;hal&quot;,&quot;keg&quot;,&quot;hew&quot;,&quot;zed&quot;,&quot;tow&quot;,&quot;gog&quot;,&quot;ass&quot;,&quot;dem&quot;,&quot;who&quot;,&quot;bet&quot;,&quot;gos&quot;,&quot;son&quot;,&quot;ear&quot;,&quot;spy&quot;,&quot;kit&quot;,&quot;boy&quot;,&quot;due&quot;,&quot;sen&quot;,&quot;oaf&quot;,&quot;mix&quot;,&quot;hep&quot;,&quot;fur&quot;,&quot;ada&quot;,&quot;bin&quot;,&quot;nil&quot;,&quot;mia&quot;,&quot;ewe&quot;,&quot;hit&quot;,&quot;fix&quot;,&quot;sad&quot;,&quot;rib&quot;,&quot;eye&quot;,&quot;hop&quot;,&quot;haw&quot;,&quot;wax&quot;,&quot;mid&quot;,&quot;tad&quot;,&quot;ken&quot;,&quot;wad&quot;,&quot;rye&quot;,&quot;pap&quot;,&quot;bog&quot;,&quot;gut&quot;,&quot;ito&quot;,&quot;woe&quot;,&quot;our&quot;,&quot;ado&quot;,&quot;sin&quot;,&quot;mad&quot;,&quot;ray&quot;,&quot;hon&quot;,&quot;roy&quot;,&quot;dip&quot;,&quot;hen&quot;,&quot;iva&quot;,&quot;lug&quot;,&quot;asp&quot;,&quot;hui&quot;,&quot;yak&quot;,&quot;bay&quot;,&quot;poi&quot;,&quot;yep&quot;,&quot;bun&quot;,&quot;try&quot;,&quot;lad&quot;,&quot;elm&quot;,&quot;nat&quot;,&quot;wyo&quot;,&quot;gym&quot;,&quot;dug&quot;,&quot;toe&quot;,&quot;dee&quot;,&quot;wig&quot;,&quot;sly&quot;,&quot;rip&quot;,&quot;geo&quot;,&quot;cog&quot;,&quot;pas&quot;,&quot;zen&quot;,&quot;odd&quot;,&quot;nan&quot;,&quot;lay&quot;,&quot;pod&quot;,&quot;fit&quot;,&quot;hem&quot;,&quot;joy&quot;,&quot;bum&quot;,&quot;rio&quot;,&quot;yon&quot;,&quot;dec&quot;,&quot;leg&quot;,&quot;put&quot;,&quot;sue&quot;,&quot;dim&quot;,&quot;pet&quot;,&quot;yaw&quot;,&quot;nub&quot;,&quot;bit&quot;,&quot;bur&quot;,&quot;sid&quot;,&quot;sun&quot;,&quot;oil&quot;,&quot;red&quot;,&quot;doc&quot;,&quot;moe&quot;,&quot;caw&quot;,&quot;eel&quot;,&quot;dix&quot;,&quot;cub&quot;,&quot;end&quot;,&quot;gem&quot;,&quot;off&quot;,&quot;yew&quot;,&quot;hug&quot;,&quot;pop&quot;,&quot;tub&quot;,&quot;sgt&quot;,&quot;lid&quot;,&quot;pun&quot;,&quot;ton&quot;,&quot;sol&quot;,&quot;din&quot;,&quot;yup&quot;,&quot;jab&quot;,&quot;pea&quot;,&quot;bug&quot;,&quot;gag&quot;,&quot;mil&quot;,&quot;jig&quot;,&quot;hub&quot;,&quot;low&quot;,&quot;did&quot;,&quot;tin&quot;,&quot;get&quot;,&quot;gte&quot;,&quot;sox&quot;,&quot;lei&quot;,&quot;mig&quot;,&quot;fig&quot;,&quot;lon&quot;,&quot;use&quot;,&quot;ban&quot;,&quot;flo&quot;,&quot;nov&quot;,&quot;jut&quot;,&quot;bag&quot;,&quot;mir&quot;,&quot;sty&quot;,&quot;lap&quot;,&quot;two&quot;,&quot;ins&quot;,&quot;con&quot;,&quot;ant&quot;,&quot;net&quot;,&quot;tux&quot;,&quot;ode&quot;,&quot;stu&quot;,&quot;mug&quot;,&quot;cad&quot;,&quot;nap&quot;,&quot;gun&quot;,&quot;fop&quot;,&quot;tot&quot;,&quot;sow&quot;,&quot;sal&quot;,&quot;sic&quot;,&quot;ted&quot;,&quot;wot&quot;,&quot;del&quot;,&quot;imp&quot;,&quot;cob&quot;,&quot;way&quot;,&quot;ann&quot;,&quot;tan&quot;,&quot;mci&quot;,&quot;job&quot;,&quot;wet&quot;,&quot;ism&quot;,&quot;err&quot;,&quot;him&quot;,&quot;all&quot;,&quot;pad&quot;,&quot;hah&quot;,&quot;hie&quot;,&quot;aim&quot;,&quot;ike&quot;,&quot;jed&quot;,&quot;ego&quot;,&quot;mac&quot;,&quot;baa&quot;,&quot;min&quot;,&quot;com&quot;,&quot;ill&quot;,&quot;was&quot;,&quot;cab&quot;,&quot;ago&quot;,&quot;ina&quot;,&quot;big&quot;,&quot;ilk&quot;,&quot;gal&quot;,&quot;tap&quot;,&quot;duh&quot;,&quot;ola&quot;,&quot;ran&quot;,&quot;lab&quot;,&quot;top&quot;,&quot;gob&quot;,&quot;hot&quot;,&quot;ora&quot;,&quot;tia&quot;,&quot;kip&quot;,&quot;han&quot;,&quot;met&quot;,&quot;hut&quot;,&quot;she&quot;,&quot;sac&quot;,&quot;fed&quot;,&quot;goo&quot;,&quot;tee&quot;,&quot;ell&quot;,&quot;not&quot;,&quot;act&quot;,&quot;gil&quot;,&quot;rut&quot;,&quot;ala&quot;,&quot;ape&quot;,&quot;rig&quot;,&quot;cid&quot;,&quot;god&quot;,&quot;duo&quot;,&quot;lin&quot;,&quot;aid&quot;,&quot;gel&quot;,&quot;awl&quot;,&quot;lag&quot;,&quot;elf&quot;,&quot;liz&quot;,&quot;ref&quot;,&quot;aha&quot;,&quot;fib&quot;,&quot;oho&quot;,&quot;tho&quot;,&quot;her&quot;,&quot;nor&quot;,&quot;ace&quot;,&quot;adz&quot;,&quot;fun&quot;,&quot;ned&quot;,&quot;coo&quot;,&quot;win&quot;,&quot;tao&quot;,&quot;coy&quot;,&quot;van&quot;,&quot;man&quot;,&quot;pit&quot;,&quot;guy&quot;,&quot;foe&quot;,&quot;hid&quot;,&quot;mai&quot;,&quot;sup&quot;,&quot;jay&quot;,&quot;hob&quot;,&quot;mow&quot;,&quot;jot&quot;,&quot;are&quot;,&quot;pol&quot;,&quot;arc&quot;,&quot;lax&quot;,&quot;aft&quot;,&quot;alb&quot;,&quot;len&quot;,&quot;air&quot;,&quot;pug&quot;,&quot;pox&quot;,&quot;vow&quot;,&quot;got&quot;,&quot;meg&quot;,&quot;zoe&quot;,&quot;amp&quot;,&quot;ale&quot;,&quot;bud&quot;,&quot;gee&quot;,&quot;pin&quot;,&quot;dun&quot;,&quot;pat&quot;,&quot;ten&quot;,&quot;mob&quot;};
+
+        String[] strs = new String[]{&quot;ted&quot;,&quot;tex&quot;,&quot;red&quot;,&quot;tax&quot;,&quot;tad&quot;,&quot;den&quot;,&quot;rex&quot;,&quot;pee&quot;};
+
+        List&lt;String&gt; wordList = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; strs.length; i ++){
+            wordList.add(strs[i]);
+        }
+        long start = System.currentTimeMillis();
+        findLadders(&quot;red&quot;, &quot;tax&quot;, wordList);
+        System.out.println(System.currentTimeMillis() - start);
+    }
+
+    public static List&lt;List&lt;String&gt;&gt; findLadders(String beginWord, String endWord, List&lt;String&gt; wordList) {
+
+        HashMap&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
+        HashMap&lt;Integer,String&gt; map1 = new HashMap&lt;&gt;();
+        HashSet&lt;String&gt; wordSet = new HashSet&lt;&gt;();
+        HashSet&lt;String&gt; visited = new HashSet&lt;&gt;();
+        int end = -1;
+        for (int i = 0; i &lt; wordList.size(); i ++){
+            String s =  wordList.get(i);
+            if (!s.equals(beginWord)){
+                map.put(s, i + 1);
+                map1.put(i + 1, s);
+                if (s.equals(endWord)){
+                    end = i + 1;
+                }
+                wordSet.add(s);
+            }
+        }
+        map.put(beginWord, 0);
+        map1.put(0, beginWord);
+
+        int N = wordList.size() + 1;
+        boolean[][] dp = new boolean[N][N];
+        boolean stop = false;
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(beginWord);
+        int count = queue.size();
+        while (!queue.isEmpty()){
+            List&lt;List&lt;String&gt;&gt; lists = new ArrayList&lt;&gt;();
+            for (int i = 0; i &lt; count; i ++){
+                String s = queue.poll();
+                int sIndex = map.get(s);
+                List&lt;String&gt; list = canChange(s,  wordSet);
+                for (String s1 : list) {
+                    if (s1.equals(endWord)){
+                        stop = true;
+                    }
+                    dp[sIndex][map.get(s1)] = true;
+                }
+                lists.add(list);
+            }
+            if (stop){
+                break;
+            }
+            for (List&lt;String&gt; list : lists) {
+                for (String str : list) {
+                    if (!visited.contains(str)) {
+                        queue.add(str);
+                    }
+                    visited.add(str);
+                    wordSet.remove(str);
+                }
+            }
+            count = queue.size();
+        }
+
+        List&lt;List&lt;String&gt;&gt; ans = new ArrayList&lt;&gt;();
+        if (!stop){
+            return ans;
+        }
+        List&lt;String&gt; res = new ArrayList&lt;&gt;();
+        res.add(endWord);
+        dfs(dp, end, res , ans, map1);
+        return ans;
+    }
+
+    private static void dfs(boolean[][] dp, int cur, List&lt;String&gt; res, List&lt;List&lt;String&gt;&gt; ans, HashMap&lt;Integer,String&gt; map){
+        if (cur == 0){
+            List&lt;String&gt; r = new ArrayList&lt;&gt;();
+            for (int i = res.size() - 1; i &gt;= 0; i --){
+                r.add(res.get(i));
+            }
+            ans.add(r);
+            return;
+        }
+        for (int i = 0; i &lt; dp.length; i ++){
+            if (dp[i][cur]){
+                res.add(map.get(i));
+                dfs(dp, i,  res,  ans, map);
+                res.remove(res.size() - 1);
+            }
+        }
+    }
+
+
+
+    private static List&lt;String&gt; canChange(String cur, HashSet&lt;String&gt; wordSet){
+        List&lt;String&gt; res = new ArrayList&lt;&gt;();
+        for (String word : wordSet) {
+            int count = 0;
+            for (int j = 0; j &lt; cur.length(); j ++){
+                if (word.charAt(j) != cur.charAt(j)){
+                    count ++;
+                }
+                if (count &gt; 1){
+                    break;
+                }
+            }
+            if (count == 1){
+                res.add(word);
+            }
+        }
+        return res;
+    }
+    
+}
+</code></pre>

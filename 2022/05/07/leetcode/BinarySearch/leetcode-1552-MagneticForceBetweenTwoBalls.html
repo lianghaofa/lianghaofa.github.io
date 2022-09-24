@@ -1,0 +1,87 @@
+<hr>
+<p>title: leetcode-33-Magnetic Force Between Two Balls<br>date: 2022-04-30 19:50:52<br>summary: 两球之间的磁力<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="搜索旋转排序数组"><a href="#搜索旋转排序数组" class="headerlink" title="搜索旋转排序数组"></a>搜索旋转排序数组</h2><h3 id="暴力解"><a href="#暴力解" class="headerlink" title="暴力解"></a>暴力解</h3><p>1.先获取所有磁力<br>2.从最大的磁力开始试  能不能分成 m - 1 段</p>
+<p><a href="https://leetcode-cn.com/problems/magnetic-force-between-two-balls/">leetcode-1552-MagneticForceBetweenTwoBalls</a></p>
+<p>如何判断是否能分成 m - 1 段 ？  排好序后暴力分割</p>
+<pre><code>    private static boolean canSeparate(int[] position, int m, int dist){
+        // 事前已把 position 排好序
+        int count = 0;
+        int pre = position[0];
+        for (int i = 1; i &lt; position.length; i ++){
+            if (position[i] - pre &gt;=  dist){
+                pre = position[i];
+                count ++;
+            }
+        }
+        return count &gt;= (m - 1);
+    }
+</code></pre>
+<p>** 只是提供一种暴力思路… 主要还是二分解！ **</p>
+<pre><code class="java">    public static int maxDistance1(int[] position, int m) {
+
+        // 1.先获取所有磁力
+        PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(new Comparator&lt;Integer&gt;() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+        Arrays.sort(position);
+        Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+        for (int i = 0; i &lt; position.length; i ++){
+            for (int j = i + 1; j &lt; position.length; j ++){
+                int dist = Math.abs(position[j] - position[i]);
+                if (!set.contains(dist)){
+                    maxHeap.add(dist);
+                    set.add(dist);
+                }
+            }
+        }
+        // 2.从最大的开始试  能不能分成 m - 1 段
+        while (!maxHeap.isEmpty()){
+            int dist = maxHeap.poll();
+            if (canSeparate(position, m, dist)){
+                return dist;
+            }
+        }
+        return -1;
+    }
+</code></pre>
+<h3 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h3><p>使用二分查找，得有范围。<br>左边界 l &#x3D; 1;<br>右边界 r &#x3D; 最大值。 </p>
+<pre><code class="java">    public static int maxDistance(int[] position, int m) {
+
+        // 优化解就在 如何找磁力
+
+        Arrays.sort(position);
+        int minDist = 1;
+        int maxDist = position[position.length - 1];
+        int ans = 0;
+        while (minDist &lt;= maxDist){
+            int mid = minDist + (maxDist - minDist &gt;&gt; 1);
+            if (canSeparate(position, m, mid)){
+                ans = mid;
+                minDist = mid + 1;
+            }else {
+                maxDist = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+    private static boolean canSeparate(int[] position, int m, int dist){
+        // 事前已把 position 排好序
+        int count = 0;
+        int pre = position[0];
+        for (int i = 1; i &lt; position.length; i ++){
+            if (position[i] - pre &gt;=  dist){
+                pre = position[i];
+                count ++;
+            }
+        }
+        return count &gt;= (m - 1);
+    }
+</code></pre>

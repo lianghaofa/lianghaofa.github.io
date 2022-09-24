@@ -1,0 +1,56 @@
+<hr>
+<p>title: leetcode-658-Find K Closest Elements<br>date: 2022-05-16 18:30:52<br>summary: 找到 K 个最接近的元素<br>categories: leetcode</p>
+<ul>
+<li>二分</li>
+</ul>
+<hr>
+<h2 id="找到-K-个最接近的元素"><a href="#找到-K-个最接近的元素" class="headerlink" title="找到 K 个最接近的元素"></a>找到 K 个最接近的元素</h2><blockquote>
+<p>有序<br>二分查询到最接近的数<br>双指针外两边扩</p>
+</blockquote>
+<p><a href="https://leetcode.cn/problems/find-k-closest-elements/">leetcode-658-Find K Closest Elements</a></p>
+<pre><code class="java">class Solution {
+    public List&lt;Integer&gt; findClosestElements(int[] arr, int k, int x) {
+        List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+        int l = 0;
+        int r = arr.length - 1;
+        int index = arr.length;
+        while (l &lt;= r){
+            int mid = l + (r - l &gt;&gt; 1);
+            if (arr[mid] &gt;= x){
+                index = mid;
+                r = mid - 1;
+            }else {
+                l = mid + 1;
+            }
+        }
+        r = index;
+        if (index == arr.length){
+            // index - 1
+            l = index - 2;
+        }else if (index == 0 || arr[index] == x || Math.abs(arr[index] - x) &lt; Math.abs(arr[index - 1] - x) ){
+            // index
+            l = index - 1;
+            r = index + 1;
+        }else {
+            // index - 1
+            l = index - 2;
+        }
+        while (k &gt; 1 &amp;&amp; (l &gt;= 0 || r &lt; arr.length)){
+            if (l &lt; 0){
+                r ++;
+            }else if (r &gt;= arr.length){
+                l --;
+            }else if (Math.abs(arr[l] - x) &gt; Math.abs(arr[r] - x)){
+                r ++;
+            }else {
+                l --;
+            }
+            k --;
+        }
+        for (int i = l + 1 ; i &lt; r; i ++){
+            list.add(arr[i]);
+        }
+        return list;
+    }
+}
+</code></pre>

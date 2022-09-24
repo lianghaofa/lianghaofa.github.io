@@ -1,0 +1,41 @@
+<hr>
+<p>title: leetcode-329-LongestIncreasingPath<br>date: 2022-04-26 21:40:52<br>summary: 矩阵中的最长递增路径<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DFS</li>
+</ul>
+<hr>
+<h2 id="矩阵中的最长递增路径"><a href="#矩阵中的最长递增路径" class="headerlink" title="矩阵中的最长递增路径"></a>矩阵中的最长递增路径</h2><p><a href="https://leetcode-cn.com/problems/longest-increasing-path-in-a-matrix/">leetcode-329-LongestIncreasingPath</a></p>
+<blockquote>
+<p>DFS</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public static int longestIncreasingPath(int[][] matrix) {
+        if (matrix.length == 0){
+            return 0;
+        }
+        int[][] visited = new int[matrix.length][matrix[0].length];
+        int res = 0;
+        for (int i = 0; i &lt; matrix.length; i ++){
+            for (int j = 0; j &lt; matrix[i].length; j ++){
+                res = Math.max(res, increasingPath(matrix, visited, i, j, -1));
+            }
+        }
+        return res;
+    }
+    
+    public static int increasingPath(int[][] matrix,int[][] visited, int row, int col, int pre) {
+        if (row &lt; 0 || col &lt; 0 || row &gt;= matrix.length || col &gt;= matrix[row].length){
+            return 0;
+        }
+        if (matrix[row][col] &lt;= pre){
+            return 0;
+        }
+        if (visited[row][col] &gt; 0){
+            return visited[row][col];
+        }
+        visited[row][col] = Math.max(Math.max(increasingPath( matrix,visited, row - 1, col, matrix[row][col]),increasingPath( matrix,visited, row + 1, col, matrix[row][col])), 
+                Math.max(increasingPath( matrix,visited, row, col - 1, matrix[row][col]),increasingPath( matrix,visited, row, col + 1, matrix[row][col]))) + 1;
+        return visited[row][col];
+    }
+}
+</code></pre>

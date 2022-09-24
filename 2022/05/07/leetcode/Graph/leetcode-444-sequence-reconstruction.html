@@ -1,0 +1,70 @@
+<hr>
+<p>title: leetcode-444-Is Graph Bipartite<br>date: 2022-05-08 15:40:52<br>summary: 判断二分图<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>拓扑排序</li>
+</ul>
+<hr>
+<h2 id="重建序列"><a href="#重建序列" class="headerlink" title="重建序列"></a>重建序列</h2><p><a href="https://leetcode.cn/problems/sequence-reconstruction/">leetcode-444-Is Graph Bipartite</a></p>
+<h3 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h3><pre><code class="java">class Solution {
+    public static boolean sequenceReconstruction(int[] org, List&lt;List&lt;Integer&gt;&gt; seqs) {
+
+        int[] inDegree = new int[10001];
+        HashMap&lt;Integer, Set&lt;Integer&gt;&gt; hashMap = new HashMap&lt;&gt;();
+        Set&lt;Integer&gt; beginList = new HashSet&lt;&gt;();
+        for (List&lt;Integer&gt; list : seqs) {
+            int s = list.get(0);
+            if (s &gt; 10000) {
+                return false;
+            }
+            beginList.add(s);
+            for (int j = 0; j &lt; list.size() - 1; j++) {
+                int start = list.get(j);
+                int end = list.get(j + 1);
+                if (start &gt; 10000 || start &lt;= 0 || end &lt;= 0 || end &gt; 10000) {
+                    return false;
+                }
+                Set&lt;Integer&gt; set = hashMap.get(start);
+                if (set == null) {
+                    set = new HashSet&lt;&gt;();
+                    set.add(end);
+                    inDegree[end]++;
+                } else if (!set.contains(end)) {
+                    set.add(end);
+                    inDegree[end]++;
+                }
+                hashMap.put(start, set);
+            }
+        }
+
+        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+        for (Integer s : beginList){
+            if (inDegree[s] == 0){
+                queue.add(s);
+            }
+        }
+        int count = 0;
+        while (!queue.isEmpty()){
+            Integer q = queue.poll();
+            if (queue.size() &gt;= 1 || org[count ++] != q){
+                return false;
+            }
+            Set&lt;Integer&gt; child = hashMap.get(q);
+            if (child != null){
+                for (Integer s : child){
+                    inDegree[s] --;
+                    if (inDegree[s] == 0){
+                        queue.add(s);
+                    }
+                }
+            }
+        }
+
+        for (int value : inDegree) {
+            if (value &gt; 0) {
+                return false;
+            }
+        }
+        return count == org.length;
+    }
+}
+</code></pre>

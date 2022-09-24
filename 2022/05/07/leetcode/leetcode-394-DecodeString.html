@@ -1,0 +1,60 @@
+<hr>
+<p>title: leetcode-394-DecodeString<br>date: 2022-04-28 14:40:52<br>summary: 字符串解码<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>递归</li>
+</ul>
+<hr>
+<h2 id="字符串解码"><a href="#字符串解码" class="headerlink" title="字符串解码"></a>字符串解码</h2><p><a href="https://leetcode-cn.com/problems/decode-string/">leetcode-394-DecodeString</a></p>
+<blockquote>
+<p>遇到 [] 返回字符串<br>递归调用</p>
+</blockquote>
+<pre><code class="java">public class DecodeString {
+
+    int i = 0;
+    public String decodeString(String s) {
+        char[] str = s.toCharArray();
+        int count = 0;
+        StringBuilder ans = new StringBuilder();
+        while (i &lt; str.length) {
+            if (str[i] == &#39;[&#39;){
+                i ++;
+                String s1 =  handSquareBrackets( str);
+                for (int j = 0; j &lt; count; j ++){
+                    ans.append(s1);
+                }
+                count = 0;
+            }else if (str[i] &gt;= &#39;0&#39; &amp;&amp; str[i] &lt;= &#39;9&#39;){
+                int c = str[i ++] - &#39;0&#39;;
+                count = count * 10 + c;
+            }else {
+                ans.append(str[i ++]);
+            }
+        }
+        return ans.toString();
+    }
+
+    private String handSquareBrackets(char[] str){
+        int count = 0;
+        StringBuilder ans = new StringBuilder();
+        while (i &lt; str.length) {
+            if (str[i] == &#39;[&#39;){
+                i ++;
+                String s1 =  handSquareBrackets(str);
+                for (int j = 0; j &lt; count; j ++){
+                    ans.append(s1);
+                }
+                count = 0;
+            }else if (str[i] == &#39;]&#39;){
+                i ++;
+                return ans.toString();
+            } else if (str[i] &gt;= &#39;0&#39; &amp;&amp; str[i] &lt;= &#39;9&#39;){
+                int c = str[i ++] - &#39;0&#39;;
+                count = count * 10 + c;
+            }else {
+                ans.append(str[i ++]);
+            }
+        }
+        return ans.toString();
+    }
+}
+</code></pre>

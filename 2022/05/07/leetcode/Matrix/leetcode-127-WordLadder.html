@@ -1,0 +1,57 @@
+<hr>
+<p>title: leetcode-127-WordLadder<br>date: 2022-04-25 21:40:52<br>summary: 单词接龙<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="单词接龙"><a href="#单词接龙" class="headerlink" title="单词接龙"></a>单词接龙</h2><p><a href="https://leetcode-cn.com/problems/word-ladder/">leetcode-127-WordLadder</a></p>
+<blockquote>
+<p>BFS</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public int ladderLength(String beginWord, String endWord, List&lt;String&gt; wordList) {
+
+        Set&lt;String&gt; words = new HashSet&lt;&gt;(wordList);
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+        queue.add(beginWord);
+        int count = 1;
+        int d = 1;
+        while (!queue.isEmpty()){
+            while (count &gt; 0){
+                String w = queue.poll();
+                if (w.equals(endWord)){
+                    return d;
+                }
+                count --;
+                Set&lt;String&gt; temps = new HashSet&lt;&gt;();
+                for (String word : words){
+                    if (canChange(w, word)){
+                        queue.add(word);
+                        temps.add(word);
+                    }
+                }
+                for (String word : temps){
+                    words.remove(word);
+                }
+            }
+            d ++;
+            count = queue.size();
+        }
+        return 0;
+    }
+
+    private boolean canChange(String s1, String s2){
+        int count = 0;
+        for (int i = 0; i &lt; s1.length(); i ++){
+            if (s1.charAt(i) != s2.charAt(i)){
+                if (count == 1){
+                    return false;
+                }else {
+                    count ++;
+                }
+            }
+        }
+        return count == 1;
+    }
+}
+</code></pre>

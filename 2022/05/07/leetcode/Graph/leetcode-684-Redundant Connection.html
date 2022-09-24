@@ -1,0 +1,36 @@
+<hr>
+<p>title: leetcode-684-Redundant Connection<br>date: 2022-05-11 09:10:52<br>summary: 冗余连接<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>并查集</li>
+</ul>
+<hr>
+<h2 id="冗余连接"><a href="#冗余连接" class="headerlink" title="冗余连接"></a>冗余连接</h2><p><a href="https://leetcode.cn/problems/redundant-connection/">leetcode-684-Redundant Connection</a></p>
+<h3 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h3><pre><code class="java">class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+
+        int[] nodes = new int[1001];
+        for (int i = 0; i &lt; nodes.length; i ++){
+            nodes[i] = i;
+        }
+        for (int[] edge : edges) {
+            int s = edge[0];
+            int e = edge[1];
+            int sParent = findParent(nodes, s);
+            int eParent = findParent(nodes, e);
+            if (sParent == eParent) {
+                return edge;
+            } else {
+                nodes[sParent] = eParent;
+            }
+        }
+        return new int[]{};
+    }
+    
+    private int findParent(int[] nodes, int cur){
+        if (nodes[cur] != cur){
+            nodes[cur] = findParent(nodes, nodes[cur]);
+        }
+        return nodes[cur];
+    }
+}
+</code></pre>

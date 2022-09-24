@@ -1,0 +1,21 @@
+<hr>
+<p>title: leetcode-1980-Find Unique Binary String<br>date: 2022-06-05 14:20:52<br>summary: 找出不同的二进制字符串<br>categories: leetcode<br>tags: </p>
+<hr>
+<h2 id="找出不同的二进制字符串"><a href="#找出不同的二进制字符串" class="headerlink" title="找出不同的二进制字符串"></a>找出不同的二进制字符串</h2><p><a href="https://leetcode.cn/problems/find-unique-binary-string/">leetcode-1980-Find Unique Binary String</a></p>
+<pre><code class="java">public class FindDifferentBinaryString {
+
+    public String findDifferentBinaryString(String[] nums) {
+
+        if (nums.length == 0){
+            return &quot;&quot;;
+        }
+        char[] res = new char[nums[0].length()];
+        for (int i = 0; i &lt; nums.length; i ++){
+
+            char c = nums[i].charAt(i);
+            res[i] = c == &#39;1&#39; ? &#39;0&#39; : &#39;1&#39;;
+        }
+        return new String(res);
+    }
+}
+</code></pre>

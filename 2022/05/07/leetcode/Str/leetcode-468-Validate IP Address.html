@@ -1,0 +1,65 @@
+<hr>
+<p>title: leetcode-468-Validate IP Address<br>date: 2022-05-25 20:40:52<br>summary: 验证IP地址<br>categories: leetcode<br>tags:</p>
+<hr>
+<h2 id="验证IP地址"><a href="#验证IP地址" class="headerlink" title="验证IP地址"></a>验证IP地址</h2><p><a href="https://leetcode.cn/problems/validate-ip-address/">leetcode-468-Validate IP Address</a></p>
+<pre><code class="java">class Solution {
+    public static String validIPAddress(String queryIP) {
+
+        if (queryIP.indexOf(&#39;.&#39;) != -1){
+            return isIPv4(queryIP);
+        }else if (queryIP.indexOf(&#39;:&#39;) != -1){
+            return isIPv6(queryIP);
+        }else {
+            return &quot;Neither&quot;;
+        }
+    }
+
+    private static String isIPv6(String ip) {
+        if (ip.length() &lt;= 1 || ip.charAt(0) == &#39;:&#39; || ip.charAt(ip.length() - 1) == &#39;:&#39;){
+            return &quot;Neither&quot;;
+        }
+        String[] strs = ip.split(&quot;:&quot;);
+        if (strs.length == 8){
+            for (String str : strs){
+                if (str.length() &lt; 1 || str.length() &gt; 4){
+                    return &quot;Neither&quot;;
+                }else {
+                    for (int i = 0; i &lt; str.length(); i ++){
+                        char c = str.charAt(i);
+                        if (!(c &gt;= &#39;0&#39; &amp;&amp; c &lt;= &#39;9&#39; || c &gt;= &#39;a&#39; &amp;&amp; c &lt;= &#39;f&#39; || c &gt;= &#39;A&#39; &amp;&amp; c &lt;= &#39;F&#39;)){
+                            return &quot;Neither&quot;;
+                        }
+                    }
+                }
+            }
+            return &quot;IPv6&quot;;
+        }
+        return &quot;Neither&quot;;
+    }
+
+    private static String isIPv4(String ip) {
+        if (ip.length() &lt;= 1 || ip.charAt(0) == &#39;.&#39; || ip.charAt(ip.length() - 1) == &#39;.&#39;){
+            return &quot;Neither&quot;;
+        }
+        String[] strs = ip.split(&quot;\\.&quot;);
+        if (strs.length == 4){
+            for (String str : strs){
+                if (str.length() &lt;= 0 || str.length() &gt; 3){
+                    return &quot;Neither&quot;;
+                }
+                for (int i = 0; i &lt; str.length(); i ++){
+                    char ch = str.charAt(i);
+                    if (ch &gt; &#39;9&#39; || ch &lt; &#39;0&#39;){
+                        return &quot;Neither&quot;;
+                    }
+                }
+                if (str.charAt(0) == &#39;0&#39; &amp;&amp; str.length() &gt; 1 || Integer.parseInt(str) &gt; 255){
+                    return &quot;Neither&quot;;
+                }
+            }
+            return &quot;IPv4&quot;;
+        }
+        return &quot;Neither&quot;;
+    }
+}
+</code></pre>

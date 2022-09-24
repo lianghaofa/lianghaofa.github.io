@@ -1,0 +1,129 @@
+<hr>
+<p>title: leetcode-87-Scramble String<br>date: 2022-05-24 16:30:52<br>summary: 扰乱字符串<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="扰乱字符串"><a href="#扰乱字符串" class="headerlink" title="扰乱字符串"></a>扰乱字符串</h2><p><a href="https://leetcode.cn/problems/scramble-string/">leetcode-87-Scramble String</a></p>
+<h4 id="暴力递归到优化"><a href="#暴力递归到优化" class="headerlink" title="暴力递归到优化"></a>暴力递归到优化</h4><pre><code class="java">public class IsScramble {
+
+    public static void main(String[] args) {
+        System.out.println(isScramble(&quot;eebaacbcbcadaaedceaaacadccd&quot;, &quot;eadcaacabaddaceacbceaabeccd&quot;));
+    }
+
+    static Map&lt;String,Boolean&gt; sameMap;
+    static Map&lt;String,Boolean&gt; arrMap;
+    static Map&lt;String,Boolean&gt; checkMap;
+    public static boolean isScramble(String s1, String s2) {
+
+        int r = s1.length() - 1;
+
+        // 左侧 与 右侧 ， 元素相等
+        sameMap = new HashMap&lt;&gt;();
+        arrMap = new HashMap&lt;&gt;();
+        checkMap = new HashMap&lt;&gt;();
+
+        return check(s1.toCharArray(), s2.toCharArray() , 0, r, 0, r);
+    }
+
+
+    private static boolean check(char[] s1, char[] s2 , int l1,int r1, int l2, int r2){
+
+        String str = l1 + &quot;-&quot; + r1 + &quot;-&quot; + l2 + &quot;-&quot; + r2;
+        Boolean b = checkMap.get(str);
+        if (b != null){
+            return b;
+        }
+
+        //int mid = l + (r - l &gt;&gt; 1);
+        if (l1 == r1 &amp;&amp; checkSame(s1, s2, l1, r1, l2, r2)){
+            checkMap.put(str ,true);
+            return true;
+        }else {
+
+
+            // 只要有一个成功即可
+
+            for (int i = l1; i &lt; r1; i ++ ){
+
+                // l - i  ,  i + 1 - r
+                int count = (i - l1);
+                if (checkSame(s1, s2 , l1, i, l2, l2 + count) &amp;&amp; checkSame(s1, s2 , i + 1, r1, l2 + count + 1, r2)){
+                    checkMap.put(str ,true);
+                    return true;
+                }
+                if (checkSame(s1, s2 , l1, i, l2, l2 + count) &amp;&amp; check(s1, s2 , i + 1, r1, l2 + count + 1, r2)){
+                    checkMap.put(str ,true);
+                    return true;
+                }
+                if (checkSame(s1, s2 , i + 1, r1, l2 + count + 1, r2) &amp;&amp; check(s1, s2 , l1, i, l2, l2 + count)  ){
+                    checkMap.put(str ,true);
+                    return true;
+                }
+
+                // 交换
+                int rCount = (r1 - (i + 1));
+                if (checkArr(s1, s2, l1, i, r2 - count, r2) &amp;&amp; checkArr(s1, s2, i + 1, r1, l2, l2 + rCount ) &amp;&amp;
+                        check(s1, s2, l1, i, r2 - count, r2) &amp;&amp; check(s1, s2, i + 1, r1, l2, l2 + rCount )){
+                    checkMap.put(str ,true);
+                   return true;
+                }
+
+                if (checkArr(s1, s2 , l1, i, l2, l2 + count) &amp;&amp; checkArr(s1, s2 , i + 1, r1, l2 + count + 1, r2)
+                        &amp;&amp; check(s1, s2 , l1, i, l2, l2 + count) &amp;&amp; check(s1, s2 , i + 1, r1, l2 + count + 1, r2)){
+                    checkMap.put(str ,true);
+                    return true;
+                }
+            }
+            checkMap.put(str ,false);
+            return false;
+        }
+
+    }
+
+    private static boolean checkArr(char[] s1, char[] s2 , int l1, int r1, int l2, int r2){
+        String str = l1 + &quot;-&quot; + r1 + &quot;-&quot; + l2 + &quot;-&quot; + r2;
+        Boolean b = arrMap.get(str);
+        if (b != null){
+            return b;
+        }
+        int[] arr = new int[26];
+        for (int i = l1; i &lt;= r1; i ++){
+            arr[s1[i] - &#39;a&#39;] ++;
+        }
+
+        for (int i = l2; i &lt;= r2; i ++){
+            arr[s2[i] - &#39;a&#39;] --;
+        }
+
+        for (int value : arr) {
+            if (value != 0) {
+                arrMap.put(str, false);
+                return false;
+            }
+        }
+        arrMap.put(str, true);
+        return true;
+    }
+
+
+    private static boolean checkSame(char[] s1, char[] s2 , int l1, int r1, int l2, int r2){
+        String str = l1 + &quot;-&quot; + r1 + &quot;-&quot; + l2 + &quot;-&quot; + r2;
+        Boolean b = sameMap.get(str);
+        if (b != null){
+            return b;
+        }
+        for (int i = l1, j = l2; i &lt;= r1; i ++,j ++){
+            if (s1[i] != s2[j]){
+                sameMap.put(str, false);
+                return false;
+            }
+        }
+        sameMap.put(str, true);
+        return true;
+    }
+
+
+
+}
+</code></pre>

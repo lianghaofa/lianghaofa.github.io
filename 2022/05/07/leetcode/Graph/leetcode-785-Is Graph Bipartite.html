@@ -1,0 +1,47 @@
+<hr>
+<p>title: leetcode-785-Is Graph Bipartite<br>date: 2022-05-08 15:40:52<br>summary: 判断二分图<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>BFS   </li>
+<li>DFS</li>
+</ul>
+<hr>
+<h2 id="判断二分图"><a href="#判断二分图" class="headerlink" title="判断二分图"></a>判断二分图</h2><p><a href="https://leetcode-cn.com/problems/01-matrix/">leetcode-785-Is Graph Bipartite</a></p>
+<h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><blockquote>
+<p>可能不是连通图<br>当存在多个连通图，需要把每个连通图都拆分成功</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public boolean isBipartite(int[][] graph) {
+
+        int[] nodes = new int[graph.length];
+        for (int i = 0; i &lt; graph.length; i ++){
+            
+            if (graph[i].length &gt; 0 &amp;&amp; nodes[i] == 0){
+                Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+                nodes[i] = 101;
+                queue.add(i);
+                int count = queue.size();
+                while (!queue.isEmpty()){
+                    while (count &gt; 0){
+                        int node = queue.poll();
+                        int group = nodes[node];
+                        count --;
+                        for (int index = 0; index &lt; graph[node].length; index ++){
+                            int curNode = graph[node][index];
+                            if (nodes[curNode] == group){
+                                return false;
+                            }
+                            if (nodes[curNode] == 0){
+                                queue.add(graph[node][index]);
+                            }
+                            nodes[curNode] = -group;
+                        }
+                    }
+                    count = queue.size();
+                }
+                
+            }
+        }
+        return true;
+    }
+}
+</code></pre>

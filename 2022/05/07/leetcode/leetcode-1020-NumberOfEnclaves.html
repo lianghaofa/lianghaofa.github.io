@@ -1,0 +1,44 @@
+<hr>
+<p>title: leetcode-1020-NumberOfEnclaves<br>date: 2022-04-20 19:56:52<br>summary: 飞地的数量<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DFS</li>
+<li>递归</li>
+</ul>
+<hr>
+<h2 id="LargestPerimeter"><a href="#LargestPerimeter" class="headerlink" title="LargestPerimeter"></a>LargestPerimeter</h2><p><a href="https://leetcode-cn.com/problems/number-of-enclaves/">leetcode-1020-NumEnclaves</a><br>1.遍历四周，与1相连的赋值成0<br>2.统计剩下1的个数</p>
+<pre><code class="java">public int numEnclaves(int[][] grid) {
+        if (grid.length == 0){
+            return 0;
+        }
+        for (int i = 0;i &lt; grid.length; i ++){
+            infect(grid, i, 0);
+            infect(grid, i, grid[i].length - 1);
+        }
+        for (int i = 0;i &lt; grid[0].length; i ++){
+            infect(grid, 0, i);
+            infect(grid, grid.length - 1, i);
+        }
+        int ans = 0;
+        for (int i = 0; i &lt; grid.length; i ++){
+            for (int j = 0; j &lt; grid[i].length; j ++){
+                if (grid[i][j] == 1){
+                    ans ++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    private void infect(int[][] grid, int row, int col){
+        if (row &lt; 0 || col &lt; 0 || row &gt;= grid.length || col &gt;= grid[row].length){
+            return;
+        }
+        if (grid[row][col] == 1){
+            grid[row][col] = 0;
+            infect(grid, row - 1, col);
+            infect(grid, row + 1, col);
+            infect(grid, row, col - 1);
+            infect(grid, row, col + 1);
+        }
+    }
+</code></pre>

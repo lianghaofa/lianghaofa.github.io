@@ -1,0 +1,76 @@
+<hr>
+<p>title: leetcode-417-PacificAtlantic<br>date: 2022-04-27 18:10:52<br>summary: 太平洋大西洋水流问题<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DFS</li>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="太平洋大西洋水流问题"><a href="#太平洋大西洋水流问题" class="headerlink" title="太平洋大西洋水流问题"></a>太平洋大西洋水流问题</h2><p><a href="https://leetcode-cn.com/problems/pacific-atlantic-water-flow/">leetcode-417-PacificAtlantic</a></p>
+<blockquote>
+<p>DFS BFS<br>此类问题从成功点出发DFS BFS</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public static List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(int[][] heights) {
+        List&lt;List&lt;Integer&gt;&gt; lists = new ArrayList&lt;&gt;();
+        int r = heights.length;
+        int c = heights[0].length;
+        boolean[][] dp0 = new boolean[r][c];
+        boolean[][] dp1 = new boolean[r][c];
+
+        for (int i = 0; i &lt; heights.length; i ++){
+            dp0[i][0] = true;
+            dfs0(heights ,i, 0,dp0);
+        }
+
+        for (int j = 0; j &lt; heights[0].length; j ++){
+            dp0[0][j] = true;
+            dfs0(heights ,0, j,dp0);
+        }
+
+        for (int i = heights.length - 1; i &gt;= 0; i --){
+            dp1[i][heights[0].length - 1] = true;
+            dfs0(heights ,i, heights[0].length - 1,dp1);
+        }
+
+        for (int j = 0; j &lt; heights[0].length ; j ++){
+            dp1[heights.length - 1][j] = true;
+            dfs0(heights ,heights.length - 1, j,dp1);
+        }
+        for (int i = 0; i &lt; r; i++){
+            for (int j = 0; j &lt; c; j ++){
+                if (dp0[i][j] &amp;&amp; dp1[i][j]){
+                    List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+                    list.add(i);
+                    list.add(j);
+                    lists.add(list);
+                }
+            }
+        }
+        return lists;
+    }
+
+    private static void dfs0(int[][] heights ,int i, int j,boolean[][] can){
+        int h = heights[i][j];
+        //  上
+        if (i - 1 &gt;= 0 &amp;&amp; heights[i - 1][j] &gt;= h &amp;&amp; !can[i - 1][j]){
+            can[i - 1][j] = true;
+            dfs0(heights,i - 1,  j,can);
+        }
+        //  下
+        if (i + 1 &lt; heights.length &amp;&amp; heights[i + 1][j] &gt;= h &amp;&amp; !can[i + 1][j]){
+            can[i + 1][j] = true;
+            dfs0(heights,i + 1,  j,can);
+        }
+        //  左
+        if (j - 1 &gt;= 0 &amp;&amp; heights[i][j - 1] &gt;= h &amp;&amp; !can[i][j - 1]){
+            can[i][j - 1] = true;
+            dfs0(heights , i,  j - 1,can);
+        }
+        //  右
+        if (j + 1 &lt; heights[i].length &amp;&amp; heights[i][j + 1] &gt;= h &amp;&amp; !can[i][j + 1]){
+            can[i][j + 1] = true;
+            dfs0( heights,i,  j + 1,can);
+        }
+    }
+}
+</code></pre>

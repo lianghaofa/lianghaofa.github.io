@@ -1,0 +1,52 @@
+<hr>
+<p>title: leetcode-820-FindMaximumXOR<br>date: 2022-04-22 11:40:52<br>summary: 单词的压缩编码<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>Trie</li>
+<li>DFS</li>
+<li>BFS</li>
+</ul>
+<hr>
+<h2 id="MinimumLengthEncoding"><a href="#MinimumLengthEncoding" class="headerlink" title="MinimumLengthEncoding"></a>MinimumLengthEncoding</h2><p><a href="https://leetcode-cn.com/problems/short-encoding-of-words/">leetcode-820-FindMaximumXOR</a></p>
+<p><strong>逆序建立字典序</strong><br>&#x2F;&#x2F; 1.逆序建立字典序。因为只需要统计长度，长的可以把短的直接覆盖<br>&#x2F;&#x2F; 2.DFS或BFS统计长度</p>
+<pre><code class="java">class Solution {
+    class Node{
+        Node[] children;
+        Node(){
+            children = new Node[26];
+        }
+    }
+
+    // 1.逆序建立字典序。因为只需要统计长度，长的可以把短的直接覆盖
+    // 2.DFS或BFS统计长度
+    int ans = 0;
+    public int minimumLengthEncoding(String[] words) {
+        Node head = new Node();
+        for (String word : words) {
+            Node cur = head;
+            String s = new StringBuilder(word).reverse().toString();
+            for (int j = 0; j &lt; s.length(); j++) {
+                if (cur.children[s.charAt(j) - &#39;a&#39;] == null) {
+                    cur.children[s.charAt(j) - &#39;a&#39;] = new Node();
+                }
+                cur = cur.children[s.charAt(j) - &#39;a&#39;];
+            }
+        }
+        dfs(head, 0);
+        return ans;
+    }
+
+    private void dfs(Node cur, int depth){
+        Node[] children = cur.children;
+        boolean empty = true;
+        for (Node child : children) {
+            if (child != null) {
+                empty = false;
+                dfs(child, depth + 1);
+            }
+        }
+        if (empty){
+            ans += depth + 1;
+        }
+    }
+}
+</code></pre>

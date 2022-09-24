@@ -1,0 +1,76 @@
+<hr>
+<p>title: leetcode-926-MinFlipsMonoIncr<br>date: 2022-05-03 18:40:52<br>summary: 将字符串翻转到单调递增<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="将字符串翻转到单调递增"><a href="#将字符串翻转到单调递增" class="headerlink" title="将字符串翻转到单调递增"></a>将字符串翻转到单调递增</h2><p><a href="https://leetcode-cn.com/problems/flip-string-to-monotone-increasing/">leetcode-926-MinFlipsMonoIncr</a></p>
+<pre><code class="java">    public int minFlipsMonoIncr(String s) {
+
+        //  比较暴力的解
+        //  1. 记录结尾到当前位置有多少个0  zeroArr数组
+        //  2. 记录开头到当前位置有多少个1  oneCount
+        //  3. 遍历字符串，获取  前缀合法 + 后缀合法的结果 + 当前位置合法。   取最小值
+        int l = -1;
+        while (l + 1 &lt; s.length() &amp;&amp; s.charAt(l + 1) == &#39;0&#39;){
+            l ++;
+        }
+        int start = l + 1;
+        int zeroCount = 0;
+        int[] zeroArr = new int[s.length()];
+        for (int i = s.length() - 1; i &gt;= start; i --){
+            if (s.charAt(i) == &#39;0&#39;){
+                zeroCount ++;
+            }
+            zeroArr[i] = zeroCount;
+        }
+        int ans = Integer.MAX_VALUE;
+        int oneCount = 0;
+        for (int i = start - 1; i &lt; s.length(); i ++){
+            int flipCount = (oneCount) + (i + 1 &gt;= s.length() ? 0 : zeroArr[i + 1]);
+            if (i &gt;= 0 &amp;&amp; s.charAt(i) == &#39;1&#39;){
+                flipCount ++;
+                oneCount ++;
+            }
+            ans = Math.min(ans, flipCount);
+
+        }
+        return Math.min(oneCount, ans);
+    }
+
+    public int minFlipsMonoIncr(String s) {
+        // 最终的合法形式
+        // 000...000   000....1
+
+        // 预处理下，把前缀0去掉
+        int l = -1;
+        while (l + 1 &lt; s.length() &amp;&amp; s.charAt(l + 1) == &#39;0&#39;){
+            l ++;
+        }
+
+        // 翻转成 000...000  的代价
+        // allZeroCost = 000...000  的代价,  当且仅当 ，s.charAt(i) == &#39;1&#39; 时, allZeroCost 发生变化
+        int allZeroCost = 0;
+
+        // 尝试过记录   000...111  的代价，然后比较 allOneCost 与 allZeroCost 的最小值。但非常麻烦
+        //int allOneCost = 0;
+
+        // 翻转成 000...1  的代价 与  000... 000  代价,                 两者最小值
+        // 当且仅当 , s.charAt(i) == &#39;0&#39; 时, cost 发生变化
+
+
+        // 问题相当于 ：  dp[i - 1]  推导 -&gt;  dp[i]
+        // dp[i - 1] 为当前位置的最小代价
+
+        int cost = 0;
+        for (int i = l + 1 ; i &lt; s.length(); i ++){
+            if (s.charAt(i) == &#39;1&#39;){
+                allZeroCost ++;
+            }else {
+                cost = Math.min(allZeroCost, cost + 1);
+            }
+
+        }
+        return cost;
+    }
+</code></pre>

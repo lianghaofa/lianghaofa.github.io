@@ -1,0 +1,74 @@
+<hr>
+<p>title: leetcode-One Away LCCI<br>date: 2022-05-09 09:40:52<br>summary: 一次编辑<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>双指针</li>
+</ul>
+<hr>
+<h2 id="一次编辑"><a href="#一次编辑" class="headerlink" title="一次编辑"></a>一次编辑</h2><p><a href="https://leetcode.cn/problems/one-away-lcci/">leetcode-One Away LCCI</a></p>
+<pre><code class="java">class Solution {
+    public boolean oneEditAway(String first, String second) {
+
+        int diff = Math.abs(first.length() - second.length());
+
+        if (diff &gt; 1){
+            return false;
+        }else if (diff == 0){
+            int count = 0;
+            for (int i = 0; i &lt; first.length(); i ++){
+                if (first.charAt(i) != second.charAt(i)){
+                    count ++;
+                }
+            }
+            return count &lt;= 1;
+        }else {
+            // diff  == 1
+            char[] longOne = first.length() &gt; second.length() ? first.toCharArray() : second.toCharArray();
+            char[] shortOne = first.length() &gt; second.length() ? second.toCharArray() : first.toCharArray();
+            return oneChange(longOne, shortOne);
+
+        }
+    }
+
+
+    private boolean oneChange(char[] longOne, char[] shortOne){
+        for (int i = 0; i &lt; longOne.length &amp;&amp; i &lt; shortOne.length; i++){
+            if (longOne[i] != shortOne[i]){
+                return isSame(longOne, i + 1 ,shortOne, i);
+            }
+        }
+        return true;
+    }
+
+    private boolean isSame(char[] longOne, int s0 , char[] shortOne, int s1){
+        if (longOne.length - s0 != shortOne.length - s1){
+            return false;
+        }
+        for (int i = s0, j = s1; i &lt; longOne.length; i ++, j ++){
+            if (longOne[i] != shortOne[j]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+</code></pre>
+<h4 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h4><pre><code class="java">class Solution {
+    public boolean oneEditAway(String first, String second) {
+        char[] f = first.toCharArray();
+        char[] s = second.toCharArray();
+        int fl = 0;
+        int fr = first.length() - 1;
+        int sl = 0;
+        int sr = second.length() - 1;
+        while (fl &lt; first.length() &amp;&amp; sl &lt; second.length() &amp;&amp; f[fl] == s[sl]){
+            fl ++;
+            sl ++;
+        }
+        while (fr &gt;= 0 &amp;&amp; sr &gt;= 0 &amp;&amp; f[fr] == s[sr]){
+            fr --;
+            sr --;
+        }
+        return Math.max(fr - fl , sr - sl) &lt; 1;
+    }
+}
+</code></pre>

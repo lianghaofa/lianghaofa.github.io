@@ -1,0 +1,36 @@
+<hr>
+<p>title: leetcode-841-CanVisitAllRooms<br>date: 2022-04-22 02:40:52<br>summary: 钥匙和房间<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>图</li>
+<li>DFS</li>
+</ul>
+<hr>
+<h2 id="LargestPerimeter"><a href="#LargestPerimeter" class="headerlink" title="LargestPerimeter"></a>LargestPerimeter</h2><p><a href="https://leetcode-cn.com/problems/keys-and-rooms/">leetcode-841-CanVisitAllRooms</a></p>
+<p>&#x2F;&#x2F; 需要注意的点<br>最初，除 0 号房间外的其余所有房间都被锁住。<br><strong>0 号房间是打开的</strong></p>
+<pre><code class="java">    public static boolean canVisitAllRooms(List&lt;List&lt;Integer&gt;&gt; rooms) {
+
+        boolean[] visited = new boolean[rooms.size()];
+        dfs(visited, rooms, 0);
+        visited[0] = true;
+        for (int i = 1; i &lt; visited.length; i ++){
+            if (!visited[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static void dfs(boolean[] visited, List&lt;List&lt;Integer&gt;&gt; rooms, Integer cur) {
+        if (visited[cur]){
+            return;
+        }
+        List&lt;Integer&gt; roomList = rooms.get(cur);
+        visited[cur] = true;
+        for (int j = 0; j &lt; roomList.size(); j ++){
+            if (visited[roomList.get(j)]){
+                continue;
+            }
+            dfs(visited, rooms, roomList.get(j));
+        }
+    }
+</code></pre>

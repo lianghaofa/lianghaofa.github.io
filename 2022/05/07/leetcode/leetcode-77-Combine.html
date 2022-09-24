@@ -1,0 +1,29 @@
+<hr>
+<p>title: leetcode-77-Combine<br>date: 2022-04-25 18:40:52<br>summary: 组合<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DFS</li>
+</ul>
+<hr>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><p><a href="https://leetcode-cn.com/problems/combinations/">leetcode-77-MySqrt</a></p>
+<pre><code class="java">class Solution {
+    public List&lt;List&lt;Integer&gt;&gt; combine(int n, int k) {
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+        combineN( 1, n, k,  ans, new ArrayList&lt;&gt;());
+        return ans;
+    }
+    
+    private void combineN(int start, int end, int k, List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; a){
+        if (k == 0){
+            ans.add(new ArrayList&lt;&gt;(a));
+            return;
+        }
+        if (start == end &amp;&amp; k &gt; 1 || start + k - 1 &gt; end){
+            return;
+        }
+        a.add(start);
+        combineN(start + 1, end,  k - 1,  ans,  a);
+        a.remove(a.size() - 1);
+        combineN(start + 1, end,  k,  ans,  a);
+    }
+}
+</code></pre>

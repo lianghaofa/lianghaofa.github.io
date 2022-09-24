@@ -1,0 +1,19 @@
+<hr>
+<p>title: leetcode-1985-KthLargestNumber<br>date: 2022-05-07 14:45:52<br>summary: 找出数组中的第 K 大整数<br>categories: leetcode<br>tags:</p>
+<hr>
+<h2 id="找出数组中的第-K-大整数"><a href="#找出数组中的第-K-大整数" class="headerlink" title="找出数组中的第 K 大整数"></a>找出数组中的第 K 大整数</h2><p><a href="https://leetcode-cn.com/problems/find-the-kth-largest-integer-in-the-array/">leetcode-1985-KthLargestNumber</a></p>
+<pre><code class="java">class Solution {
+    public String kthLargestNumber(String[] nums, int k) {
+        Arrays.sort(nums, new Comparator&lt;String&gt;() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1.length() != o2.length()){
+                    return o2.length() - o1.length();
+                }
+                return o2.compareTo(o1);
+            }
+        });
+        return nums[k - 1];
+    }
+}
+</code></pre>

@@ -1,0 +1,85 @@
+<hr>
+<p>title: leetcode-873-Length of Longest Fibonacci Subsequence<br>date: 2022-05-10 09:40:52<br>summary: 最长的斐波那契子序列的长度<br>categories: leetcode<br>tags:</p>
+<ul>
+<li>DP</li>
+</ul>
+<hr>
+<h2 id="最长的斐波那契子序列的长度"><a href="#最长的斐波那契子序列的长度" class="headerlink" title="最长的斐波那契子序列的长度"></a>最长的斐波那契子序列的长度</h2><p><a href="https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/">leetcode-873-Length of Longest Fibonacci Subsequence</a></p>
+<h4 id="暴力"><a href="#暴力" class="headerlink" title="暴力"></a>暴力</h4><pre><code class="java">    public int lenLongestFibSubseq(int[] A) {
+        int N = A.length;
+        Map&lt;Integer, Integer&gt; index = new HashMap();
+        for (int i = 0; i &lt; N; ++i) {
+            index.put(A[i], i);
+        }
+
+        Map&lt;Integer, Integer&gt; longest = new HashMap();
+        int ans = 0;
+        for (int k = 0; k &lt; N; ++k) {
+            for (int j = k - 1; j &gt;= 0; j --) {
+                int i2 = A[k];
+                int i1 = A[j];
+                int i0 = i2 - i1;
+                int last = j;
+                int i = index.getOrDefault(i0, -1);
+                int len = 2;
+                while (i &gt;= 0 &amp;&amp; i &lt; last){
+                    i2 = i1;
+                    i1 = i0;
+                    i0 = i2 - i1;
+                    last = i;
+                    i = index.getOrDefault(i0, -1);
+                    
+                    len ++;
+                }
+                ans = Math.max(ans, len);
+            }
+        }
+        return ans &gt;= 3 ? ans : 0;
+    }
+</code></pre>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><pre><code class="java">    public static int lenLongestFibSubseq(int[] A) {
+        int N = A.length;
+        Map&lt;Integer, Integer&gt; index = new HashMap();
+        for (int i = 0; i &lt; N; ++i) {
+            index.put(A[i], i);
+        }
+
+        Map&lt;Integer, Integer&gt; longest = new HashMap();
+        int ans = 0;
+        for (int k = 0; k &lt; N; k ++) {
+            for (int j = k - 1; j &gt;= 0; j --) {
+                int i2 = A[k];
+                int i1 = A[j];
+                // 建立 longest 的映射关系
+                //  (k,j) -&gt; j * N + k;
+                int map = j * N + k;
+                int i0 = i2 - i1;
+                int last = j;
+                int len = 2;
+                int i = index.getOrDefault(i0, -1);
+                if (i &gt;= 0 &amp;&amp; i &lt; j){
+                    i = longest.getOrDefault(map, -1);
+                    if (i &gt;= 0){
+                        len = i + 1;
+                    }else {
+                        len = 2;
+                        //  (i,j) -&gt; i * N + j;
+                        map = i * N + j;
+                        i = index.getOrDefault(i0, -1);
+                        while (i &gt;= 0 &amp;&amp; i &lt; last){
+                            i2 = i1;
+                            i1 = i0;
+                            i0 = i2 - i1;
+                            last = i;
+                            i = index.getOrDefault(i0, -1);
+                            len ++;
+                        }
+                        longest.put(map,len);
+                    }
+                }
+                ans = Math.max(ans, len);
+            }
+        }
+        return ans &gt;= 3 ? ans : 0;
+    }
+</code></pre>
